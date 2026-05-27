@@ -9,18 +9,33 @@ from tqdm import tqdm
 from transformers import AutoConfig, AutoModel, AutoTokenizer
 
 
+def load_pretrained_encoder(model_name):
+    path = resolve_model_path(model_name)
+    config = AutoConfig.from_pretrained(path if os.path.isdir(path) else model_name)
+    weights_path = os.path.join(path, 'pytorch_model.bin') if os.path.isdir(path) else None
+    if weights_path and os.path.isfile(weights_path):
+        encoder = AutoModel.from_config(config)
+        state_dict = torch.load(weights_path, map_location='cpu', weights_only=True)
+        prefix = 'deberta.'
+        encoder_sd = {k[len(prefix):]: v for k, v in state_dict.items() if k.startswith(prefix)}
+        encoder_sd.pop('embeddings.position_embeddings.weight', None)
+        encoder.load_state_dict(encoder_sd, strict=False)
+        print(f'Loaded encoder weights from {weights_path}')
+        return encoder
+    try:
+        return AutoModel.from_pretrained(path if os.path.isdir(path) else model_name)
+    except OSError:
+        print(f'Pretrained weights for {model_name} not found; initialize model from config.')
+        return AutoModel.from_config(config)
+
+
 # ==========================================
 # 1. Model definition (must match training)
 # ==========================================
 class CPAModel(nn.Module):
     def __init__(self, model_name, num_labels):
         super().__init__()
-        try:
-            self.encoder = AutoModel.from_pretrained(model_name)
-        except OSError:
-            print(f'Pretrained weights for {model_name} not found; initialize model from config.')
-            config = AutoConfig.from_pretrained(model_name)
-            self.encoder = AutoModel.from_config(config)
+        self.encoder = load_pretrained_encoder(model_name)
         self.dropout = nn.Dropout(0.1)
 
         hidden_size = getattr(self.encoder.config, 'hidden_size', None)
@@ -116,6 +131,19 @@ def collate_fn(samples):
 # ==========================================
 # 4. Device helper
 # ==========================================
+def resolve_model_path(model_name):
+    if os.path.isdir(model_name):
+        return os.path.abspath(model_name)
+    path = os.path.abspath(os.path.expanduser(model_name))
+    if os.path.isdir(path):
+        if not os.path.isfile(os.path.join(path, 'config.json')):
+            raise FileNotFoundError(
+                f'Model directory exists but config.json is missing: {path}'
+            )
+        return path
+    return model_name
+
+
 def resolve_device(device_arg):
     requested = (device_arg or '').lower()
     if requested.startswith('gpu'):
@@ -154,9 +182,11 @@ def run_inference(args):
         classes = [line.strip() for line in f.readlines() if line.strip()]
     id2label = {idx: label for idx, label in enumerate(classes)}
 
+    model_name = resolve_model_path(args.shortcut_name)
+
     # Initialize tokenizer and model.
-    tokenizer = AutoTokenizer.from_pretrained(args.shortcut_name)
-    model = CPAModel(args.shortcut_name, len(classes)).to(device)
+    tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False)
+    model = CPAModel(model_name, len(classes)).to(device)
 
     if not os.path.exists(args.model_path):
         raise FileNotFoundError(f'Model file not found: {args.model_path}')
@@ -223,11 +253,12 @@ if __name__ == '__main__':
     parser.add_argument('--labels_path', type=str, default="../dataset/labels.txt")
     parser.add_argument('--model_path', type=str, default="./cpa_output/cpa_YYYYMMDD_HHMMSS/best_model.pt")
     parser.add_argument('--output_file', type=str, default='./submission.csv')
-    parser.add_argument('--shortcut_name', type=str, default='bert-base-uncased')
-    parser.add_argument('--batch_size', type=int, default=256)
-    parser.add_argument('--max_length', type=int, default=512)
+    parser.add_argument('--shortcut_name', type=str, default='../../deberta-v3-large')
+    parser.add_argument('--batch_size', type=int, default=64)
+    parser.add_argument('--max_length', type=int, default=128)
     parser.add_argument('--num_workers', type=int, default=0)
     parser.add_argument('--device', type=str, default='gpu')
-    parser.add_argument('--use_amp', action='store_true')
+    parser.add_argument('--use_amp', action='store_true', default=True)
+    parser.add_argument('--no_amp', action='store_false', dest='use_amp')
     args = parser.parse_args()
     run_inference(args)

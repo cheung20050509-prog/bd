@@ -105,16 +105,36 @@ def dynamic_collate_fn(samples):
     }
 
 
+def load_pretrained_encoder(model_name):
+    """Load encoder weights; use manual torch.load for local .bin when torch<2.6."""
+    path = resolve_model_path(model_name)
+    config = AutoConfig.from_pretrained(path if os.path.isdir(path) else model_name)
+    weights_path = os.path.join(path, 'pytorch_model.bin') if os.path.isdir(path) else None
+    if weights_path and os.path.isfile(weights_path):
+        encoder = AutoModel.from_config(config)
+        state_dict = torch.load(weights_path, map_location='cpu', weights_only=True)
+        prefix = 'deberta.'
+        encoder_sd = {k[len(prefix):]: v for k, v in state_dict.items() if k.startswith(prefix)}
+        encoder_sd.pop('embeddings.position_embeddings.weight', None)
+        missing, unexpected = encoder.load_state_dict(encoder_sd, strict=False)
+        if missing:
+            logging.warning(f'encoder missing keys: {missing}')
+        if unexpected:
+            logging.warning(f'encoder unexpected keys: {unexpected}')
+        logging.info(f'loaded encoder weights from {weights_path}')
+        return encoder
+    try:
+        return AutoModel.from_pretrained(path if os.path.isdir(path) else model_name)
+    except OSError:
+        logging.warning(f'pretrained weights for {model_name} not found; initialize model from config')
+        return AutoModel.from_config(config)
+
+
 # model
 class CPAModel(nn.Module):
     def __init__(self, model_name, num_labels, use_flash_attn=False):
         super().__init__()
-        try:
-            self.encoder = AutoModel.from_pretrained(model_name)
-        except OSError:
-            logging.warning(f'pretrained weights for {model_name} not found; initialize model from config')
-            config = AutoConfig.from_pretrained(model_name)
-            self.encoder = AutoModel.from_config(config)
+        self.encoder = load_pretrained_encoder(model_name)
         self.dropout = nn.Dropout(0.1)
 
         hidden_size = getattr(self.encoder.config, 'hidden_size', None)
@@ -199,6 +219,32 @@ def save_train_args(args, save_dir, num_classes):
         json.dump(config, f, ensure_ascii=False, indent=2)
 
 
+def resolve_model_path(model_name):
+    path = os.path.abspath(os.path.expanduser(model_name))
+    if os.path.isdir(path):
+        return path
+    if os.path.isdir(model_name):
+        return os.path.abspath(model_name)
+    return model_name
+
+
+def validate_model_path(model_name):
+    path = resolve_model_path(model_name)
+    if os.path.isdir(path) and not os.path.isfile(os.path.join(path, 'config.json')):
+        raise FileNotFoundError(
+            f'Model directory exists but config.json is missing: {path}\n'
+            'Download with: huggingface-cli download microsoft/deberta-v3-large '
+            f'--local-dir {path}'
+        )
+    if os.path.isdir(path):
+        return path
+    return model_name
+
+
+def optimizer_steps_per_epoch(num_batches, grad_accum_steps):
+    return max(1, (num_batches + grad_accum_steps - 1) // grad_accum_steps)
+
+
 # train
 def run_training(args):
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
@@ -208,6 +254,15 @@ def run_training(args):
     device = resolve_device(args.device)
 
     logging.info(f'device: {device}')
+
+    model_name = validate_model_path(args.shortcut_name)
+    grad_accum = max(1, args.gradient_accumulation_steps)
+    effective_batch = args.batch_size * grad_accum
+    logging.info(f'model: {model_name}')
+    logging.info(
+        f'batch_size={args.batch_size}, grad_accum={grad_accum}, '
+        f'effective_batch_size={effective_batch}'
+    )
 
     # 1. load train data
     raw_train_df = load_data_from_directory(args.train_dir)
@@ -240,7 +295,7 @@ def run_training(args):
     logging.info(f'split success: train={len(train_df)}, val={len(val_df)}')
 
     # 4. Tokenizer & DataLoader
-    tokenizer = AutoTokenizer.from_pretrained(args.shortcut_name)
+    tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False)
     train_loader = DataLoader(
         RelationDataset(train_df, tokenizer, label_encoder, args.max_length),
         batch_size=args.batch_size,
@@ -259,8 +314,9 @@ def run_training(args):
     )
 
     # 5. model init
-    model = CPAModel(args.shortcut_name, num_classes, args.use_flash_attention).to(device)
-    total_steps = max(1, len(train_loader) * args.epoch)
+    model = CPAModel(model_name, num_classes, args.use_flash_attention).to(device)
+    steps_per_epoch = optimizer_steps_per_epoch(len(train_loader), grad_accum)
+    total_steps = max(1, steps_per_epoch * args.epoch)
     warmup_steps = int(total_steps * args.warmup_ratio)
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr)
     lr_scheduler = get_linear_schedule_with_warmup(
@@ -285,6 +341,8 @@ def run_training(args):
         train_steps = 0
 
         pbar = tqdm(train_loader, desc=f'Epoch {epoch + 1}/{args.epoch}')
+        optimizer.zero_grad(set_to_none=True)
+        micro_step = 0
         for batch in pbar:
             if batch is None:
                 continue
@@ -293,24 +351,39 @@ def run_training(args):
             mask = batch['attention_mask'].to(device)
             label_ids = batch['label'].to(device)
 
-            optimizer.zero_grad(set_to_none=True)
             with torch.amp.autocast(device_type=device.type, enabled=use_amp):
                 logits = model(input_ids, mask)
-                loss = loss_fn(logits, label_ids)
+                loss = loss_fn(logits, label_ids) / grad_accum
 
             if use_amp:
                 scaler.scale(loss).backward()
+            else:
+                loss.backward()
+
+            micro_step += 1
+            loss_value = float(loss.item()) * grad_accum
+            tr_loss += loss_value
+            train_steps += 1
+
+            if micro_step % grad_accum == 0:
+                if use_amp:
+                    scaler.step(optimizer)
+                    scaler.update()
+                else:
+                    optimizer.step()
+                optimizer.zero_grad(set_to_none=True)
+                lr_scheduler.step()
+
+            pbar.set_postfix({'loss': f'{loss_value:.4f}'})
+
+        if micro_step % grad_accum != 0:
+            if use_amp:
                 scaler.step(optimizer)
                 scaler.update()
             else:
-                loss.backward()
                 optimizer.step()
-
+            optimizer.zero_grad(set_to_none=True)
             lr_scheduler.step()
-            loss_value = float(loss.item())
-            tr_loss += loss_value
-            train_steps += 1
-            pbar.set_postfix({'loss': f'{loss_value:.4f}'})
 
         # val stage
         model.eval()
@@ -358,15 +431,17 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--train_dir', type=str, default="../dataset/Train_Set")
     parser.add_argument('--output_dir', type=str, default='./cpa_output')
-    parser.add_argument('--shortcut_name', type=str, default='bert-base-uncased')
-    parser.add_argument('--batch_size', type=int, default=32)
+    parser.add_argument('--shortcut_name', type=str, default='../../deberta-v3-large')
+    parser.add_argument('--batch_size', type=int, default=24)
+    parser.add_argument('--gradient_accumulation_steps', type=int, default=2)
     parser.add_argument('--epoch', type=int, default=20)
     parser.add_argument('--lr', type=float, default=5e-5)
     parser.add_argument('--max_length', type=int, default=128)
     parser.add_argument('--random_seed', type=int, default=42)
     parser.add_argument('--num_workers', type=int, default=0)
     parser.add_argument('--use_flash_attention', action='store_true')
-    parser.add_argument('--use_amp', action='store_true')
+    parser.add_argument('--use_amp', action='store_true', default=True)
+    parser.add_argument('--no_amp', action='store_false', dest='use_amp')
     parser.add_argument('--warmup_ratio', type=float, default=0.1)
     parser.add_argument('--patience', type=int, default=3)
     parser.add_argument('--val_ratio', type=float, default=0.1)
