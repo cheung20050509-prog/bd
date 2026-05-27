@@ -1,0 +1,21 @@
+# Training / inference artifacts
+baseline/cpa_output/
+baseline/submission.csv
+*.pt
+*.pdparams
+
+# Extracted training data (use dataset/Train_Set.zip)
+dataset/Train_Set/
+
+# Python
+__pycache__/
+*.py[cod]
+.Python
+*.egg-info/
+.eggs/
+
+# Env / IDE
+.env
+.venv/
+.idea/
+.vscode/

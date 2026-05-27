@@ -1,19 +1,20 @@
 import argparse
+import json
+import logging
 import os
 import random
-import logging
 from datetime import datetime
 
 import numpy as np
 import pandas as pd
-import paddle
-import paddle.nn as nn
-from paddle.io import Dataset, DataLoader
+import torch
+import torch.nn as nn
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
+from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
+from transformers import AutoConfig, AutoModel, AutoTokenizer, get_linear_schedule_with_warmup
 
-from paddlenlp.transformers import AutoTokenizer, AutoModel, LinearDecayWithWarmup
 
 # data load
 def load_data_from_directory(dir_path):
@@ -47,34 +48,22 @@ def load_data_from_directory(dir_path):
     full_df['Object'] = full_df['Object'].astype(str)
     return full_df
 
+
 # encode data
-def encode_text(tokenizer, text_input, max_length):
-    try:
-        encoding = tokenizer(
-            text_input,
-            max_length=max_length,
-            padding='max_length',
-            truncation=True,
-            return_attention_mask=True,
-        )
-    except TypeError:
-        encoding = tokenizer(
-            text=text_input,
-            max_seq_len=max_length,
-            pad_to_max_seq_len=True,
-            truncation=True,
-            return_attention_mask=True,
-        )
+def encode_pair(tokenizer, text_a, text_b, max_length):
+    encoding = tokenizer(
+        text_a,
+        text_b,
+        max_length=max_length,
+        padding='max_length',
+        truncation=True,
+        return_attention_mask=True,
+    )
+    return (
+        torch.tensor(encoding['input_ids'], dtype=torch.long),
+        torch.tensor(encoding['attention_mask'], dtype=torch.long),
+    )
 
-    input_ids = encoding['input_ids']
-    attention_mask = encoding.get('attention_mask', None)
-
-    if attention_mask is None:
-        seq_len = encoding.get('seq_len', len(input_ids))
-        seq_len = min(seq_len, max_length)
-        attention_mask = [1] * seq_len + [0] * (max_length - seq_len)
-
-    return np.array(input_ids, dtype='int64'), np.array(attention_mask, dtype='int64')
 
 # dataset
 class RelationDataset(Dataset):
@@ -89,15 +78,20 @@ class RelationDataset(Dataset):
 
     def __getitem__(self, idx):
         row = self.data.iloc[idx]
-        text_input = f"{row['Subject']} [SEP] {row['Object']}"
-        input_ids, attention_mask = encode_text(self.tokenizer, text_input, self.max_length)
+        input_ids, attention_mask = encode_pair(
+            self.tokenizer,
+            str(row['Subject']),
+            str(row['Object']),
+            self.max_length,
+        )
         label_id = self.le.transform([row['label']])[0]
         return {
             'valid': True,
-            'token_ids': input_ids,
-            'cls_mask': attention_mask,
-            'label_id': np.int64(label_id),
+            'input_ids': input_ids,
+            'attention_mask': attention_mask,
+            'label': torch.tensor(label_id, dtype=torch.long),
         }
+
 
 def dynamic_collate_fn(samples):
     valid_samples = [s for s in samples if s.get('valid', False)]
@@ -105,55 +99,49 @@ def dynamic_collate_fn(samples):
         return None
 
     return {
-        'data': np.stack([s['token_ids'] for s in valid_samples]).astype('int64'),
-        'label': np.array([s['label_id'] for s in valid_samples], dtype='int64'),
-        'cls_mask': np.stack([s['cls_mask'] for s in valid_samples]).astype('int64'),
+        'input_ids': torch.stack([s['input_ids'] for s in valid_samples]),
+        'attention_mask': torch.stack([s['attention_mask'] for s in valid_samples]),
+        'label': torch.stack([s['label'] for s in valid_samples]),
     }
 
+
 # model
-class CPAModel(nn.Layer):
+class CPAModel(nn.Module):
     def __init__(self, model_name, num_labels, use_flash_attn=False):
         super().__init__()
-        self.encoder = AutoModel.from_pretrained(model_name)
+        try:
+            self.encoder = AutoModel.from_pretrained(model_name)
+        except OSError:
+            logging.warning(f'pretrained weights for {model_name} not found; initialize model from config')
+            config = AutoConfig.from_pretrained(model_name)
+            self.encoder = AutoModel.from_config(config)
         self.dropout = nn.Dropout(0.1)
 
-        hidden_size = None
-        if hasattr(self.encoder, 'config'):
-            if isinstance(self.encoder.config, dict):
-                hidden_size = self.encoder.config.get('hidden_size', None)
-            else:
-                hidden_size = getattr(self.encoder.config, 'hidden_size', None)
-
-        if hidden_size is None and hasattr(self.encoder, 'embeddings') and hasattr(self.encoder.embeddings, 'word_embeddings'):
-            hidden_size = self.encoder.embeddings.word_embeddings.weight.shape[-1]
-
+        hidden_size = getattr(self.encoder.config, 'hidden_size', None)
         if hidden_size is None:
-            raise ValueError('hidden_size in None')
+            raise ValueError('hidden_size is None')
 
         self.classifier = nn.Linear(hidden_size, num_labels)
 
         if use_flash_attn:
-            logging.warning('flash attention not activate')
+            logging.warning('flash attention not activated')
 
     def forward(self, input_ids, attention_mask):
         outputs = self.encoder(input_ids=input_ids, attention_mask=attention_mask)
-
-        if isinstance(outputs, tuple):
-            sequence_output = outputs[0]
-        elif hasattr(outputs, 'last_hidden_state'):
-            sequence_output = outputs.last_hidden_state
-        else:
-            sequence_output = outputs
-
+        sequence_output = outputs.last_hidden_state if hasattr(outputs, 'last_hidden_state') else outputs[0]
         cls_embedding = sequence_output[:, 0, :]
         logits = self.classifier(self.dropout(cls_embedding))
         return logits
+
 
 # seed
 def set_seed(seed):
     random.seed(seed)
     np.random.seed(seed)
-    paddle.seed(seed)
+    torch.manual_seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
+
 
 # log
 def setup_logging(save_dir):
@@ -167,26 +155,34 @@ def setup_logging(save_dir):
         ],
     )
 
+
 # device
 def resolve_device(device_arg):
-    try:
-        custom_types = paddle.device.get_all_custom_device_type()
-    except Exception:
-        custom_types = []
+    requested = (device_arg or '').lower()
+    if requested.startswith('gpu'):
+        requested = requested.replace('gpu', 'cuda', 1)
 
-    logging.info(f'custom device types: {custom_types}')
-    
-    if device_arg:
-        try:
-            dev = paddle.set_device(device_arg)
-            logging.info(f'use: {dev}')
-            return dev
-        except Exception as e:
-            logging.warning(f'{device_arg} use error: {e}')
-            
-    dev = paddle.set_device('cpu')
+    if requested.startswith('cuda'):
+        if torch.cuda.is_available():
+            device = torch.device(requested)
+            logging.info(f'use: {device}')
+            return device
+        logging.warning(f'{device_arg} requested but CUDA is not available')
+
+    if requested == 'cpu':
+        device = torch.device('cpu')
+        logging.info(f'use: {device}')
+        return device
+
+    if torch.cuda.is_available():
+        device = torch.device('cuda')
+        logging.info(f'use: {device}')
+        return device
+
+    device = torch.device('cpu')
     logging.warning('set device to CPU')
-    return dev
+    return device
+
 
 # labels
 def save_label_classes(label_encoder, save_dir):
@@ -194,6 +190,14 @@ def save_label_classes(label_encoder, save_dir):
     with open(path, 'w', encoding='utf-8') as f:
         for label in label_encoder.classes_:
             f.write(f'{label}\n')
+
+
+def save_train_args(args, save_dir, num_classes):
+    config = vars(args).copy()
+    config['num_classes'] = int(num_classes)
+    with open(os.path.join(save_dir, 'train_args.json'), 'w', encoding='utf-8') as f:
+        json.dump(config, f, ensure_ascii=False, indent=2)
+
 
 # train
 def run_training(args):
@@ -208,12 +212,13 @@ def run_training(args):
     # 1. load train data
     raw_train_df = load_data_from_directory(args.train_dir)
 
-    # 2. bulid lable
+    # 2. build label
     label_encoder = LabelEncoder()
     label_encoder.fit(raw_train_df['label'].unique())
     num_classes = len(label_encoder.classes_)
     logging.info(f'label_num: {num_classes}')
     save_label_classes(label_encoder, save_dir)
+    save_train_args(args, save_dir, num_classes)
 
     # 3. split dataset
     counts = raw_train_df['label'].value_counts()
@@ -242,7 +247,7 @@ def run_training(args):
         shuffle=True,
         collate_fn=dynamic_collate_fn,
         num_workers=args.num_workers,
-        return_list=True,
+        pin_memory=device.type == 'cuda',
     )
     val_loader = DataLoader(
         RelationDataset(val_df, tokenizer, label_encoder, args.max_length),
@@ -250,18 +255,23 @@ def run_training(args):
         shuffle=False,
         collate_fn=dynamic_collate_fn,
         num_workers=args.num_workers,
-        return_list=True,
+        pin_memory=device.type == 'cuda',
     )
 
     # 5. model init
-    model = CPAModel(args.shortcut_name, num_classes, args.use_flash_attention)
+    model = CPAModel(args.shortcut_name, num_classes, args.use_flash_attention).to(device)
     total_steps = max(1, len(train_loader) * args.epoch)
-    lr_scheduler = LinearDecayWithWarmup(args.lr, total_steps, warmup=args.warmup_ratio)
-    optimizer = paddle.optimizer.AdamW(learning_rate=lr_scheduler, parameters=model.parameters())
+    warmup_steps = int(total_steps * args.warmup_ratio)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr)
+    lr_scheduler = get_linear_schedule_with_warmup(
+        optimizer,
+        num_warmup_steps=warmup_steps,
+        num_training_steps=total_steps,
+    )
     loss_fn = nn.CrossEntropyLoss()
 
-    use_amp = args.use_amp and str(device) != 'cpu'
-    scaler = paddle.amp.GradScaler(init_loss_scaling=1024) if use_amp else None
+    use_amp = args.use_amp and device.type == 'cuda'
+    scaler = torch.amp.GradScaler('cuda', enabled=use_amp)
 
     # 6. training
     best_acc = 0.0
@@ -279,27 +289,25 @@ def run_training(args):
             if batch is None:
                 continue
 
-            input_ids = paddle.to_tensor(batch['data'], dtype='int64')
-            mask = paddle.to_tensor(batch['cls_mask'], dtype='int64')
-            label_ids = paddle.to_tensor(batch['label'], dtype='int64')
+            input_ids = batch['input_ids'].to(device)
+            mask = batch['attention_mask'].to(device)
+            label_ids = batch['label'].to(device)
 
-            if use_amp:
-                with paddle.amp.auto_cast(enable=True):
-                    logits = model(input_ids, mask)
-                    loss = loss_fn(logits, label_ids)
-                scaled = scaler.scale(loss)
-                scaled.backward()
-                scaler.minimize(optimizer, scaled)
-                optimizer.clear_grad()
-            else:
+            optimizer.zero_grad(set_to_none=True)
+            with torch.amp.autocast(device_type=device.type, enabled=use_amp):
                 logits = model(input_ids, mask)
                 loss = loss_fn(logits, label_ids)
+
+            if use_amp:
+                scaler.scale(loss).backward()
+                scaler.step(optimizer)
+                scaler.update()
+            else:
                 loss.backward()
                 optimizer.step()
-                optimizer.clear_grad()
 
             lr_scheduler.step()
-            loss_value = float(loss.numpy())
+            loss_value = float(loss.item())
             tr_loss += loss_value
             train_steps += 1
             pbar.set_postfix({'loss': f'{loss_value:.4f}'})
@@ -307,23 +315,20 @@ def run_training(args):
         # val stage
         model.eval()
         val_correct, val_total = 0, 0
-        with paddle.no_grad():
+        with torch.no_grad():
             for batch in val_loader:
                 if batch is None:
                     continue
 
-                input_ids = paddle.to_tensor(batch['data'], dtype='int64')
-                mask = paddle.to_tensor(batch['cls_mask'], dtype='int64')
-                label_ids = paddle.to_tensor(batch['label'], dtype='int64')
+                input_ids = batch['input_ids'].to(device)
+                mask = batch['attention_mask'].to(device)
+                label_ids = batch['label'].to(device)
 
-                if use_amp:
-                    with paddle.amp.auto_cast(enable=True):
-                        logits = model(input_ids, mask)
-                else:
+                with torch.amp.autocast(device_type=device.type, enabled=use_amp):
                     logits = model(input_ids, mask)
 
-                preds = paddle.argmax(logits, axis=1)
-                val_correct += int((preds == label_ids).astype('int64').sum().numpy())
+                preds = torch.argmax(logits, dim=1)
+                val_correct += int((preds == label_ids).sum().item())
                 val_total += int(label_ids.shape[0])
 
         avg_train_loss = tr_loss / max(1, train_steps)
@@ -333,7 +338,7 @@ def run_training(args):
         if val_acc > best_acc:
             best_acc = val_acc
             patience_counter = 0
-            paddle.save(model.state_dict(), os.path.join(save_dir, 'best_model.pdparams'))
+            torch.save(model.state_dict(), os.path.join(save_dir, 'best_model.pt'))
             try:
                 tokenizer.save_pretrained(save_dir)
             except Exception:
@@ -351,7 +356,7 @@ def run_training(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--train_dir', type=str, default="./dataset/Train_Set")
+    parser.add_argument('--train_dir', type=str, default="../dataset/Train_Set")
     parser.add_argument('--output_dir', type=str, default='./cpa_output')
     parser.add_argument('--shortcut_name', type=str, default='bert-base-uncased')
     parser.add_argument('--batch_size', type=int, default=32)

@@ -1,35 +1,29 @@
 import argparse
 import os
 
-import numpy as np
 import pandas as pd
-import paddle
-import paddle.nn as nn
-from paddle.io import Dataset, DataLoader
+import torch
+import torch.nn as nn
+from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
-
-from paddlenlp.transformers import AutoTokenizer, AutoModel
+from transformers import AutoConfig, AutoModel, AutoTokenizer
 
 
 # ==========================================
 # 1. Model definition (must match training)
 # ==========================================
-class CPAModel(nn.Layer):
+class CPAModel(nn.Module):
     def __init__(self, model_name, num_labels):
         super().__init__()
-        self.encoder = AutoModel.from_pretrained(model_name)
+        try:
+            self.encoder = AutoModel.from_pretrained(model_name)
+        except OSError:
+            print(f'Pretrained weights for {model_name} not found; initialize model from config.')
+            config = AutoConfig.from_pretrained(model_name)
+            self.encoder = AutoModel.from_config(config)
         self.dropout = nn.Dropout(0.1)
 
-        hidden_size = None
-        if hasattr(self.encoder, 'config'):
-            if isinstance(self.encoder.config, dict):
-                hidden_size = self.encoder.config.get('hidden_size', None)
-            else:
-                hidden_size = getattr(self.encoder.config, 'hidden_size', None)
-
-        if hidden_size is None and hasattr(self.encoder, 'embeddings') and hasattr(self.encoder.embeddings, 'word_embeddings'):
-            hidden_size = self.encoder.embeddings.word_embeddings.weight.shape[-1]
-
+        hidden_size = getattr(self.encoder.config, 'hidden_size', None)
         if hidden_size is None:
             raise ValueError('Unable to infer hidden_size automatically. Please check the pretrained model.')
 
@@ -37,14 +31,7 @@ class CPAModel(nn.Layer):
 
     def forward(self, input_ids, attention_mask):
         outputs = self.encoder(input_ids=input_ids, attention_mask=attention_mask)
-
-        if isinstance(outputs, tuple):
-            sequence_output = outputs[0]
-        elif hasattr(outputs, 'last_hidden_state'):
-            sequence_output = outputs.last_hidden_state
-        else:
-            sequence_output = outputs
-
+        sequence_output = outputs.last_hidden_state if hasattr(outputs, 'last_hidden_state') else outputs[0]
         cls_embedding = sequence_output[:, 0, :]
         logits = self.classifier(self.dropout(cls_embedding))
         return logits
@@ -54,45 +41,18 @@ class CPAModel(nn.Layer):
 # 2. Tokenization helper
 # ==========================================
 def encode_pair(tokenizer, text_a, text_b, max_length):
-    """Handle text-pair tokenization across different PaddleNLP versions."""
-    try:
-        encoding = tokenizer(
-            text=text_a,
-            text_pair=text_b,
-            max_length=max_length,
-            padding='max_length',
-            truncation=True,
-            return_attention_mask=True,
-        )
-    except TypeError:
-        try:
-            encoding = tokenizer(
-                text_a,
-                text_b,
-                max_length=max_length,
-                padding='max_length',
-                truncation=True,
-                return_attention_mask=True,
-            )
-        except TypeError:
-            encoding = tokenizer(
-                text=text_a,
-                text_pair=text_b,
-                max_seq_len=max_length,
-                pad_to_max_seq_len=True,
-                truncation=True,
-                return_attention_mask=True,
-            )
-
-    input_ids = encoding['input_ids']
-    attention_mask = encoding.get('attention_mask', None)
-
-    if attention_mask is None:
-        seq_len = encoding.get('seq_len', len(input_ids))
-        seq_len = min(seq_len, max_length)
-        attention_mask = [1] * seq_len + [0] * (max_length - seq_len)
-
-    return np.array(input_ids, dtype='int64'), np.array(attention_mask, dtype='int64')
+    encoding = tokenizer(
+        text_a,
+        text_b,
+        max_length=max_length,
+        padding='max_length',
+        truncation=True,
+        return_attention_mask=True,
+    )
+    return (
+        torch.tensor(encoding['input_ids'], dtype=torch.long),
+        torch.tensor(encoding['attention_mask'], dtype=torch.long),
+    )
 
 
 # ==========================================
@@ -103,7 +63,6 @@ class SingleTableInferenceDataset(Dataset):
         self.tokenizer = tokenizer
         self.max_length = max_length
         self.samples = []
-        self.original_rows = []
 
         # Read the CSV file.
         df = pd.read_csv(csv_path, low_memory=False, encoding='utf-8-sig')
@@ -123,17 +82,16 @@ class SingleTableInferenceDataset(Dataset):
         if subject_col is None or object_col is None:
             raise ValueError("The CSV file must contain 'Subject' and 'Object' columns (case-insensitive).")
 
-        # Drop rows with missing Subject/Object values.
-        temp_df = df[[subject_col, object_col]].dropna()
-        for idx, row in temp_df.iterrows():
-            self.samples.append((str(row[subject_col]), str(row[object_col])))
-            self.original_rows.append(idx)
+        # Only rows with valid Subject/Object values receive predictions.
+        valid_df = df[[subject_col, object_col]].dropna()
+        for original_idx, row in valid_df.iterrows():
+            self.samples.append((original_idx, str(row[subject_col]), str(row[object_col])))
 
     def __len__(self):
         return len(self.samples)
 
     def __getitem__(self, idx):
-        subject_text, object_text = self.samples[idx]
+        original_idx, subject_text, object_text = self.samples[idx]
         input_ids, attention_mask = encode_pair(
             self.tokenizer,
             subject_text,
@@ -143,15 +101,15 @@ class SingleTableInferenceDataset(Dataset):
         return {
             'input_ids': input_ids,
             'attention_mask': attention_mask,
-            'orig_idx': np.int64(idx),
+            'orig_idx': torch.tensor(original_idx, dtype=torch.long),
         }
 
 
 def collate_fn(samples):
     return {
-        'input_ids': np.stack([s['input_ids'] for s in samples]).astype('int64'),
-        'attention_mask': np.stack([s['attention_mask'] for s in samples]).astype('int64'),
-        'orig_idx': np.array([s['orig_idx'] for s in samples], dtype='int64'),
+        'input_ids': torch.stack([s['input_ids'] for s in samples]),
+        'attention_mask': torch.stack([s['attention_mask'] for s in samples]),
+        'orig_idx': torch.stack([s['orig_idx'] for s in samples]),
     }
 
 
@@ -159,25 +117,30 @@ def collate_fn(samples):
 # 4. Device helper
 # ==========================================
 def resolve_device(device_arg):
-    """Try the requested device first, otherwise fall back to CPU."""
-    try:
-        custom_types = paddle.device.get_all_custom_device_type()
-    except Exception:
-        custom_types = []
+    requested = (device_arg or '').lower()
+    if requested.startswith('gpu'):
+        requested = requested.replace('gpu', 'cuda', 1)
 
-    print(f'Available custom devices: {custom_types}')
+    if requested.startswith('cuda'):
+        if torch.cuda.is_available():
+            device = torch.device(requested)
+            print(f'Using requested device: {device}')
+            return device
+        print(f'Failed to set requested device {device_arg}: CUDA is not available.')
 
-    if device_arg:
-        try:
-            dev = paddle.set_device(device_arg)
-            print(f'Using requested device: {dev}')
-            return dev
-        except Exception as e:
-            print(f'Failed to set requested device {device_arg}: {e}')
+    if requested == 'cpu':
+        device = torch.device('cpu')
+        print(f'Using requested device: {device}')
+        return device
 
-    dev = paddle.set_device('cpu')
+    if torch.cuda.is_available():
+        device = torch.device('cuda')
+        print(f'Using default device: {device}')
+        return device
+
+    device = torch.device('cpu')
     print('Falling back to CPU.')
-    return dev
+    return device
 
 
 # ==========================================
@@ -193,13 +156,13 @@ def run_inference(args):
 
     # Initialize tokenizer and model.
     tokenizer = AutoTokenizer.from_pretrained(args.shortcut_name)
-    model = CPAModel(args.shortcut_name, len(classes))
+    model = CPAModel(args.shortcut_name, len(classes)).to(device)
 
     if not os.path.exists(args.model_path):
         raise FileNotFoundError(f'Model file not found: {args.model_path}')
 
-    state_dict = paddle.load(args.model_path)
-    model.set_state_dict(state_dict)
+    state_dict = torch.load(args.model_path, map_location=device, weights_only=True)
+    model.load_state_dict(state_dict)
     model.eval()
 
     # Load the dataset.
@@ -210,29 +173,25 @@ def run_inference(args):
         shuffle=False,
         num_workers=args.num_workers,
         collate_fn=collate_fn,
-        return_list=True,
+        pin_memory=device.type == 'cuda',
     )
 
     print(f'Starting inference. Total valid rows: {len(dataset)}')
-    predictions = [None] * len(dataset)
-    use_amp = args.use_amp and str(device) != 'cpu'
+    predictions = {}
+    use_amp = args.use_amp and device.type == 'cuda'
 
-    with paddle.no_grad():
+    with torch.no_grad():
         for batch in tqdm(dataloader, desc='Running inference'):
-            ids = paddle.to_tensor(batch['input_ids'], dtype='int64')
-            mask = paddle.to_tensor(batch['attention_mask'], dtype='int64')
-            orig_indices = batch['orig_idx'].tolist()
+            ids = batch['input_ids'].to(device)
+            mask = batch['attention_mask'].to(device)
+            orig_indices = batch['orig_idx'].cpu().tolist()
 
-            if use_amp:
-                with paddle.amp.auto_cast(enable=True):
-                    logits = model(ids, mask)
-            else:
+            with torch.amp.autocast(device_type=device.type, enabled=use_amp):
                 logits = model(ids, mask)
 
-            preds = paddle.argmax(logits, axis=1).numpy().tolist()
-            for idx_in_batch, pred_idx in enumerate(preds):
-                original_position = orig_indices[idx_in_batch]
-                predictions[original_position] = id2label[pred_idx]
+            preds = torch.argmax(logits, dim=1).cpu().tolist()
+            for original_row_idx, pred_idx in zip(orig_indices, preds):
+                predictions[original_row_idx] = id2label[pred_idx]
 
     # Reload the original CSV and attach predictions.
     original_df = pd.read_csv(args.input_csv, low_memory=False, encoding='utf-8-sig')
@@ -249,23 +208,20 @@ def run_inference(args):
     if subject_col is None or object_col is None:
         raise ValueError("The CSV file must contain 'Subject' and 'Object' columns (case-insensitive).")
 
-    # Only rows with valid Subject/Object pairs receive predictions.
-    valid_mask = original_df[subject_col].notna() & original_df[object_col].notna()
-    valid_indices = original_df[valid_mask].index.tolist()
-
     original_df['Label'] = None
-    for row_idx, pred_label in zip(valid_indices, predictions):
+    for row_idx, pred_label in predictions.items():
         original_df.loc[row_idx, 'Label'] = pred_label
 
     # Save the result without modifying the source file.
     original_df.to_csv(args.output_file, index=False, encoding='utf-8-sig')
     print(f'Inference completed. Results saved to: {args.output_file}')
 
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--input_csv', type=str, default="./test.csv")
-    parser.add_argument('--labels_path', type=str, default="./labels.txt")
-    parser.add_argument('--model_path', type=str, default="./cpa_output/cpa_20260422_191904/best_model.pdparams")
+    parser.add_argument('--input_csv', type=str, default="../dataset/test.csv")
+    parser.add_argument('--labels_path', type=str, default="../dataset/labels.txt")
+    parser.add_argument('--model_path', type=str, default="./cpa_output/cpa_YYYYMMDD_HHMMSS/best_model.pt")
     parser.add_argument('--output_file', type=str, default='./submission.csv')
     parser.add_argument('--shortcut_name', type=str, default='bert-base-uncased')
     parser.add_argument('--batch_size', type=int, default=256)
