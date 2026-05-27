@@ -15,6 +15,15 @@ from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
 from transformers import AutoConfig, AutoModel, AutoTokenizer, get_linear_schedule_with_warmup
 
+from metrics import (
+    compute_accuracy,
+    compute_class_weights,
+    compute_score_final,
+    ids_to_labels,
+    normalize_weights,
+    weights_tensor_for_encoder,
+)
+
 
 # data load
 def load_data_from_directory(dir_path):
@@ -132,10 +141,10 @@ def load_pretrained_encoder(model_name):
 
 # model
 class CPAModel(nn.Module):
-    def __init__(self, model_name, num_labels, use_flash_attn=False):
+    def __init__(self, model_name, num_labels, use_flash_attn=False, dropout=0.1):
         super().__init__()
         self.encoder = load_pretrained_encoder(model_name)
-        self.dropout = nn.Dropout(0.1)
+        self.dropout = nn.Dropout(dropout)
 
         hidden_size = getattr(self.encoder.config, 'hidden_size', None)
         if hidden_size is None:
@@ -245,10 +254,16 @@ def optimizer_steps_per_epoch(num_batches, grad_accum_steps):
     return max(1, (num_batches + grad_accum_steps - 1) // grad_accum_steps)
 
 
-# train
-def run_training(args):
+def resolve_save_dir(output_dir, run_name=None):
+    if run_name:
+        return os.path.join(output_dir, f'cpa_{run_name}')
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    save_dir = os.path.join(args.output_dir, f'cpa_{timestamp}')
+    return os.path.join(output_dir, f'cpa_{timestamp}')
+
+
+# train
+def run_training(args, optuna_trial=None):
+    save_dir = resolve_save_dir(args.output_dir, getattr(args, 'run_name', None))
     setup_logging(save_dir)
     set_seed(args.random_seed)
     device = resolve_device(args.device)
@@ -272,11 +287,24 @@ def run_training(args):
     label_encoder.fit(raw_train_df['label'].unique())
     num_classes = len(label_encoder.classes_)
     logging.info(f'label_num: {num_classes}')
+
+    label_counts = raw_train_df['label'].value_counts()
+    label_to_weight = compute_class_weights(label_counts)
+    if args.normalize_class_weights:
+        label_to_weight = normalize_weights(label_to_weight)
+    weight_values = list(label_to_weight.values())
+    logging.info(
+        f'class weights ({args.loss_type}): min={min(weight_values):.4f}, '
+        f'max={max(weight_values):.4f}, mean={float(np.mean(weight_values)):.4f}'
+    )
+    with open(os.path.join(save_dir, 'class_weights.json'), 'w', encoding='utf-8') as f:
+        json.dump(label_to_weight, f, ensure_ascii=False, indent=2)
+
     save_label_classes(label_encoder, save_dir)
     save_train_args(args, save_dir, num_classes)
 
     # 3. split dataset
-    counts = raw_train_df['label'].value_counts()
+    counts = label_counts
     rare_labels = counts[counts < 2].index
     df_rare = raw_train_df[raw_train_df['label'].isin(rare_labels)]
     df_common = raw_train_df[~raw_train_df['label'].isin(rare_labels)]
@@ -314,25 +342,40 @@ def run_training(args):
     )
 
     # 5. model init
-    model = CPAModel(model_name, num_classes, args.use_flash_attention).to(device)
+    dropout = getattr(args, 'dropout', 0.1)
+    weight_decay = getattr(args, 'weight_decay', 0.0)
+    model = CPAModel(
+        model_name, num_classes, args.use_flash_attention, dropout=dropout
+    ).to(device)
     steps_per_epoch = optimizer_steps_per_epoch(len(train_loader), grad_accum)
     total_steps = max(1, steps_per_epoch * args.epoch)
     warmup_steps = int(total_steps * args.warmup_ratio)
-    optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=weight_decay)
     lr_scheduler = get_linear_schedule_with_warmup(
         optimizer,
         num_warmup_steps=warmup_steps,
         num_training_steps=total_steps,
     )
-    loss_fn = nn.CrossEntropyLoss()
+    if args.loss_type == 'competition':
+        class_weights = weights_tensor_for_encoder(label_encoder, label_to_weight, device)
+        loss_fn = nn.CrossEntropyLoss(weight=class_weights)
+        logging.info('loss: CrossEntropyLoss with competition class weights')
+    else:
+        loss_fn = nn.CrossEntropyLoss()
+        logging.info('loss: unweighted CrossEntropyLoss')
 
     use_amp = args.use_amp and device.type == 'cuda'
     scaler = torch.amp.GradScaler('cuda', enabled=use_amp)
 
     # 6. training
     best_acc = 0.0
+    best_score_final = 0.0
+    best_selection_value = 0.0
     patience_counter = 0
     patience_limit = args.patience
+    selection_metric = args.selection_metric
+
+    logging.info(f'selection metric for early stopping: {selection_metric}')
 
     logging.info('start training...')
     for epoch in range(args.epoch):
@@ -387,7 +430,8 @@ def run_training(args):
 
         # val stage
         model.eval()
-        val_correct, val_total = 0, 0
+        val_true_ids = []
+        val_pred_ids = []
         with torch.no_grad():
             for batch in val_loader:
                 if batch is None:
@@ -401,22 +445,44 @@ def run_training(args):
                     logits = model(input_ids, mask)
 
                 preds = torch.argmax(logits, dim=1)
-                val_correct += int((preds == label_ids).sum().item())
-                val_total += int(label_ids.shape[0])
+                val_true_ids.extend(label_ids.cpu().tolist())
+                val_pred_ids.extend(preds.cpu().tolist())
 
+        val_true_labels = ids_to_labels(label_encoder, val_true_ids)
+        val_pred_labels = ids_to_labels(label_encoder, val_pred_ids)
         avg_train_loss = tr_loss / max(1, train_steps)
-        val_acc = val_correct / val_total if val_total > 0 else 0.0
-        logging.info(f'Epoch {epoch + 1} | Loss: {avg_train_loss:.4f} | Val Acc: {val_acc:.4f}')
+        val_acc = compute_accuracy(val_true_labels, val_pred_labels)
+        val_score_final = compute_score_final(val_true_labels, val_pred_labels, label_to_weight)
+        logging.info(
+            f'Epoch {epoch + 1} | Loss: {avg_train_loss:.4f} | '
+            f'Val Acc: {val_acc:.4f} | Val Score_final: {val_score_final:.4f}'
+        )
+
+        if optuna_trial is not None:
+            import optuna
+
+            optuna_trial.report(val_score_final, epoch)
+            if optuna_trial.should_prune():
+                raise optuna.TrialPruned()
 
         if val_acc > best_acc:
             best_acc = val_acc
+        if val_score_final > best_score_final:
+            best_score_final = val_score_final
+
+        current_metric = val_score_final if selection_metric == 'score_final' else val_acc
+        if current_metric > best_selection_value:
+            best_selection_value = current_metric
             patience_counter = 0
             torch.save(model.state_dict(), os.path.join(save_dir, 'best_model.pt'))
             try:
                 tokenizer.save_pretrained(save_dir)
             except Exception:
                 pass
-            logging.info(f'best model! (Acc: {best_acc:.4f})')
+            logging.info(
+                f'best model! ({selection_metric}={current_metric:.4f}, '
+                f'acc={val_acc:.4f}, score_final={val_score_final:.4f})'
+            )
         else:
             patience_counter += 1
             logging.info(f'early stop count: {patience_counter}/{patience_limit}')
@@ -424,13 +490,21 @@ def run_training(args):
                 logging.info(f'{patience_limit} epoch not up, early stop!!!')
                 break
 
-    logging.info(f'train finish, best acc: {best_acc:.4f}')
+    logging.info(
+        f'train finish, best acc: {best_acc:.4f}, best score_final: {best_score_final:.4f}'
+    )
+    return {
+        'best_acc': best_acc,
+        'best_score_final': best_score_final,
+        'save_dir': save_dir,
+    }
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
+def build_train_parser():
+    parser = argparse.ArgumentParser(description='Train CPA relation classifier')
     parser.add_argument('--train_dir', type=str, default="../dataset/Train_Set")
     parser.add_argument('--output_dir', type=str, default='./cpa_output')
+    parser.add_argument('--run_name', type=str, default=None, help='Fixed output subdir cpa_{run_name} (for Optuna trials)')
     parser.add_argument('--shortcut_name', type=str, default='../../deberta-v3-large')
     parser.add_argument('--batch_size', type=int, default=24)
     parser.add_argument('--gradient_accumulation_steps', type=int, default=2)
@@ -439,6 +513,8 @@ if __name__ == '__main__':
     parser.add_argument('--max_length', type=int, default=128)
     parser.add_argument('--random_seed', type=int, default=42)
     parser.add_argument('--num_workers', type=int, default=0)
+    parser.add_argument('--dropout', type=float, default=0.1)
+    parser.add_argument('--weight_decay', type=float, default=0.0)
     parser.add_argument('--use_flash_attention', action='store_true')
     parser.add_argument('--use_amp', action='store_true', default=True)
     parser.add_argument('--no_amp', action='store_false', dest='use_amp')
@@ -446,5 +522,18 @@ if __name__ == '__main__':
     parser.add_argument('--patience', type=int, default=3)
     parser.add_argument('--val_ratio', type=float, default=0.1)
     parser.add_argument('--device', type=str, default='gpu')
-    args = parser.parse_args()
+    parser.add_argument('--loss_type', type=str, default='competition', choices=['competition', 'ce'])
+    parser.add_argument(
+        '--selection_metric',
+        type=str,
+        default='score_final',
+        choices=['score_final', 'acc'],
+    )
+    parser.add_argument('--normalize_class_weights', action='store_true', default=True)
+    parser.add_argument('--no_normalize_class_weights', action='store_false', dest='normalize_class_weights')
+    return parser
+
+
+if __name__ == '__main__':
+    args = build_train_parser().parse_args()
     run_training(args)

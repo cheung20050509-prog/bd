@@ -1,5 +1,6 @@
 # Training / inference artifacts
 baseline/cpa_output/
+baseline/optuna_output/
 baseline/submission.csv
 *.pt
 *.pdparams
