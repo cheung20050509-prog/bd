@@ -4,6 +4,12 @@ baseline/optuna_output/
 baseline/submission.csv
 *.pt
 *.pdparams
+**/cpa_output/
+**/denoise_output/
+**/optuna_output/
+**/optuna_output_gpu2/
+**/*.db
+deberta-v3-large/
 
 # Extracted training data (use dataset/Train_Set.zip)
 dataset/Train_Set/
