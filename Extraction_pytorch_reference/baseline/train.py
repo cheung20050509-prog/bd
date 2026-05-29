@@ -1,0 +1,657 @@
+import argparse
+import json
+import logging
+import os
+import random
+from datetime import datetime
+
+import numpy as np
+import pandas as pd
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+from torch.utils.data import DataLoader, Dataset
+from tqdm import tqdm
+from transformers import AutoConfig, AutoModel, AutoTokenizer, get_linear_schedule_with_warmup
+
+from metrics import (
+    compute_accuracy,
+    compute_class_weights,
+    compute_score_final,
+    ids_to_labels,
+    normalize_weights,
+    weights_tensor_for_encoder,
+)
+
+
+# data load
+def load_data_from_directory(dir_path):
+    all_data = []
+    if not os.path.exists(dir_path):
+        raise ValueError(f"can't find: {dir_path}")
+
+    csv_files = [f for f in os.listdir(dir_path) if f.endswith('.csv')]
+    logging.info(f"load data from {dir_path} ...")
+
+    for filename in tqdm(csv_files, desc=f"loading {os.path.basename(dir_path)}"):
+        file_path = os.path.join(dir_path, filename)
+        label_name = filename[:-4]
+        try:
+            df = pd.read_csv(file_path, low_memory=False, encoding='utf-8-sig')
+            if df.empty:
+                continue
+            df.columns = [str(col).strip() for col in df.columns]
+            if 'Subject' in df.columns and 'Object' in df.columns:
+                df = df[['Subject', 'Object']].dropna()
+                df['label'] = label_name
+                all_data.append(df)
+        except Exception as e:
+            logging.warning(f"{filename} load error: {e}")
+
+    if not all_data:
+        raise ValueError(f"{dir_path} not valid data")
+
+    full_df = pd.concat(all_data, ignore_index=True)
+    full_df['Subject'] = full_df['Subject'].astype(str)
+    full_df['Object'] = full_df['Object'].astype(str)
+    return full_df
+
+
+# encode data
+def encode_pair(tokenizer, text_a, text_b, max_length, tokens_per_column=None):
+    cls_id = tokenizer.cls_token_id
+    sep_id = tokenizer.sep_token_id
+    pad_id = tokenizer.pad_token_id
+    if cls_id is None or sep_id is None or pad_id is None:
+        raise ValueError('Tokenizer must provide cls_token_id, sep_token_id, and pad_token_id.')
+
+    subject_ids = tokenizer.encode(text_a, add_special_tokens=False)
+    object_ids = tokenizer.encode(text_b, add_special_tokens=False)
+    if tokens_per_column and tokens_per_column > 0:
+        subject_ids = subject_ids[:tokens_per_column]
+        object_ids = object_ids[:tokens_per_column]
+
+    max_payload = max_length - 4  # [CLS] subj [SEP] [CLS] obj [SEP]
+    if max_payload < 2:
+        raise ValueError(f'max_length={max_length} is too small for doduo-style serialization')
+
+    subject_budget = min(len(subject_ids), max_payload // 2)
+    object_budget = min(len(object_ids), max_payload - subject_budget)
+    # Use remaining budget on the longer side.
+    remaining = max_payload - subject_budget - object_budget
+    if remaining > 0:
+        sub_left = len(subject_ids) - subject_budget
+        obj_left = len(object_ids) - object_budget
+        if sub_left >= obj_left:
+            take = min(remaining, sub_left)
+            subject_budget += take
+            remaining -= take
+        if remaining > 0:
+            object_budget += min(remaining, obj_left)
+
+    subject_ids = subject_ids[:subject_budget]
+    object_ids = object_ids[:object_budget]
+
+    input_ids = [cls_id] + subject_ids + [sep_id] + [cls_id] + object_ids + [sep_id]
+    subject_cls_idx = 0
+    object_cls_idx = 1 + len(subject_ids) + 1
+    attention_mask = [1] * len(input_ids)
+    if len(input_ids) < max_length:
+        pad_len = max_length - len(input_ids)
+        input_ids += [pad_id] * pad_len
+        attention_mask += [0] * pad_len
+    else:
+        input_ids = input_ids[:max_length]
+        attention_mask = attention_mask[:max_length]
+        # Keep index safe when max_length is unexpectedly tiny.
+        object_cls_idx = min(object_cls_idx, max_length - 1)
+
+    return (
+        torch.tensor(input_ids, dtype=torch.long),
+        torch.tensor(attention_mask, dtype=torch.long),
+        torch.tensor(subject_cls_idx, dtype=torch.long),
+        torch.tensor(object_cls_idx, dtype=torch.long),
+    )
+
+
+# dataset
+class RelationDataset(Dataset):
+    def __init__(self, dataframe, tokenizer, label_encoder, max_length=128, tokens_per_column=None):
+        self.data = dataframe.reset_index(drop=True)
+        self.tokenizer = tokenizer
+        self.le = label_encoder
+        self.max_length = max_length
+        self.tokens_per_column = tokens_per_column
+
+    def __len__(self):
+        return len(self.data)
+
+    def __getitem__(self, idx):
+        row = self.data.iloc[idx]
+        input_ids, attention_mask, subject_cls_idx, object_cls_idx = encode_pair(
+            self.tokenizer,
+            str(row['Subject']),
+            str(row['Object']),
+            self.max_length,
+            self.tokens_per_column,
+        )
+        label_id = self.le.transform([row['label']])[0]
+        return {
+            'valid': True,
+            'input_ids': input_ids,
+            'attention_mask': attention_mask,
+            'subject_cls_idx': subject_cls_idx,
+            'object_cls_idx': object_cls_idx,
+            'label': torch.tensor(label_id, dtype=torch.long),
+        }
+
+
+def dynamic_collate_fn(samples):
+    valid_samples = [s for s in samples if s.get('valid', False)]
+    if not valid_samples:
+        return None
+
+    return {
+        'input_ids': torch.stack([s['input_ids'] for s in valid_samples]),
+        'attention_mask': torch.stack([s['attention_mask'] for s in valid_samples]),
+        'subject_cls_idx': torch.stack([s['subject_cls_idx'] for s in valid_samples]),
+        'object_cls_idx': torch.stack([s['object_cls_idx'] for s in valid_samples]),
+        'label': torch.stack([s['label'] for s in valid_samples]),
+    }
+
+
+def load_pretrained_encoder(model_name):
+    """Load encoder weights; use manual torch.load for local .bin when torch<2.6."""
+    path = resolve_model_path(model_name)
+    config = AutoConfig.from_pretrained(path if os.path.isdir(path) else model_name)
+    weights_path = os.path.join(path, 'pytorch_model.bin') if os.path.isdir(path) else None
+    if weights_path and os.path.isfile(weights_path):
+        encoder = AutoModel.from_config(config)
+        state_dict = torch.load(weights_path, map_location='cpu', weights_only=True)
+        prefix = 'deberta.'
+        encoder_sd = {k[len(prefix):]: v for k, v in state_dict.items() if k.startswith(prefix)}
+        encoder_sd.pop('embeddings.position_embeddings.weight', None)
+        missing, unexpected = encoder.load_state_dict(encoder_sd, strict=False)
+        if missing:
+            logging.warning(f'encoder missing keys: {missing}')
+        if unexpected:
+            logging.warning(f'encoder unexpected keys: {unexpected}')
+        logging.info(f'loaded encoder weights from {weights_path}')
+        return encoder
+    try:
+        return AutoModel.from_pretrained(path if os.path.isdir(path) else model_name)
+    except OSError:
+        logging.warning(f'pretrained weights for {model_name} not found; initialize model from config')
+        return AutoModel.from_config(config)
+
+
+# model
+class CPADoduoModel(nn.Module):
+    def __init__(
+        self,
+        model_name,
+        num_labels,
+        use_flash_attn=False,
+        dropout=0.1,
+        pair_head='interaction',
+    ):
+        super().__init__()
+        self.encoder = load_pretrained_encoder(model_name)
+        self.dropout = nn.Dropout(dropout)
+        self.pair_head = pair_head
+
+        hidden_size = getattr(self.encoder.config, 'hidden_size', None)
+        if hidden_size is None:
+            raise ValueError('hidden_size is None')
+
+        pair_input_size = hidden_size * 4 if pair_head == 'interaction' else hidden_size * 2
+        self.pair_dense = nn.Linear(pair_input_size, hidden_size)
+        self.classifier = nn.Linear(hidden_size, num_labels)
+
+        if use_flash_attn:
+            logging.warning('flash attention not activated')
+
+    def forward(self, input_ids, attention_mask, subject_cls_idx, object_cls_idx):
+        outputs = self.encoder(input_ids=input_ids, attention_mask=attention_mask)
+        sequence_output = outputs.last_hidden_state if hasattr(outputs, 'last_hidden_state') else outputs[0]
+        batch_indices = torch.arange(sequence_output.size(0), device=sequence_output.device)
+        subject_cls = sequence_output[batch_indices, subject_cls_idx, :]
+        object_cls = sequence_output[batch_indices, object_cls_idx, :]
+        if self.pair_head == 'interaction':
+            pair_embedding = torch.cat(
+                [
+                    subject_cls,
+                    object_cls,
+                    torch.abs(subject_cls - object_cls),
+                    subject_cls * object_cls,
+                ],
+                dim=1,
+            )
+        else:
+            pair_embedding = torch.cat([subject_cls, object_cls], dim=1)
+        pair_embedding = self.dropout(F.gelu(self.pair_dense(pair_embedding)))
+        logits = self.classifier(pair_embedding)
+        return logits
+
+
+# seed
+def set_seed(seed):
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
+
+
+# log
+def setup_logging(save_dir):
+    os.makedirs(save_dir, exist_ok=True)
+    logging.basicConfig(
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        level=logging.INFO,
+        handlers=[
+            logging.FileHandler(os.path.join(save_dir, 'train.log'), mode='w', encoding='utf-8'),
+            logging.StreamHandler(),
+        ],
+    )
+
+
+# device
+def resolve_device(device_arg):
+    requested = (device_arg or '').lower()
+    if requested.startswith('gpu'):
+        requested = requested.replace('gpu', 'cuda', 1)
+
+    if requested.startswith('cuda'):
+        if torch.cuda.is_available():
+            device = torch.device(requested)
+            logging.info(f'use: {device}')
+            return device
+        logging.warning(f'{device_arg} requested but CUDA is not available')
+
+    if requested == 'cpu':
+        device = torch.device('cpu')
+        logging.info(f'use: {device}')
+        return device
+
+    if torch.cuda.is_available():
+        device = torch.device('cuda')
+        logging.info(f'use: {device}')
+        return device
+
+    device = torch.device('cpu')
+    logging.warning('set device to CPU')
+    return device
+
+
+# labels
+def save_label_classes(label_encoder, save_dir):
+    path = os.path.join(save_dir, 'label_classes.txt')
+    with open(path, 'w', encoding='utf-8') as f:
+        for label in label_encoder.classes_:
+            f.write(f'{label}\n')
+
+
+def save_train_args(args, save_dir, num_classes):
+    config = vars(args).copy()
+    config['num_classes'] = int(num_classes)
+    config.setdefault('architecture', 'doduo_pair_cls')
+    with open(os.path.join(save_dir, 'train_args.json'), 'w', encoding='utf-8') as f:
+        json.dump(config, f, ensure_ascii=False, indent=2)
+
+
+def resolve_model_path(model_name):
+    path = os.path.abspath(os.path.expanduser(model_name))
+    if os.path.isdir(path):
+        return path
+    if os.path.isdir(model_name):
+        return os.path.abspath(model_name)
+    return model_name
+
+
+def validate_model_path(model_name):
+    path = resolve_model_path(model_name)
+    if os.path.isdir(path) and not os.path.isfile(os.path.join(path, 'config.json')):
+        raise FileNotFoundError(
+            f'Model directory exists but config.json is missing: {path}\n'
+            'Download with: huggingface-cli download microsoft/deberta-v3-large '
+            f'--local-dir {path}'
+        )
+    if os.path.isdir(path):
+        return path
+    return model_name
+
+
+def optimizer_steps_per_epoch(num_batches, grad_accum_steps):
+    return max(1, (num_batches + grad_accum_steps - 1) // grad_accum_steps)
+
+
+def resolve_save_dir(output_dir, run_name=None):
+    if run_name:
+        return os.path.join(output_dir, f'cpa_{run_name}')
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    return os.path.join(output_dir, f'cpa_{timestamp}')
+
+
+# train
+def run_training(args, optuna_trial=None):
+    save_dir = resolve_save_dir(args.output_dir, getattr(args, 'run_name', None))
+    setup_logging(save_dir)
+    set_seed(args.random_seed)
+    device = resolve_device(args.device)
+
+    logging.info(f'device: {device}')
+
+    model_name = validate_model_path(args.shortcut_name)
+    grad_accum = max(1, args.gradient_accumulation_steps)
+    effective_batch = args.batch_size * grad_accum
+    logging.info(f'model: {model_name}')
+    logging.info(
+        f'batch_size={args.batch_size}, grad_accum={grad_accum}, '
+        f'effective_batch_size={effective_batch}'
+    )
+    logging.info(
+        f'doduo serialization: tokens_per_column={args.tokens_per_column}, '
+        f'pair_head={args.pair_head}'
+    )
+
+    # 1. load train data
+    raw_train_df = load_data_from_directory(args.train_dir)
+
+    # 2. build label
+    label_encoder = LabelEncoder()
+    label_encoder.fit(raw_train_df['label'].unique())
+    num_classes = len(label_encoder.classes_)
+    logging.info(f'label_num: {num_classes}')
+
+    label_counts = raw_train_df['label'].value_counts()
+    label_to_weight = compute_class_weights(label_counts)
+    if args.normalize_class_weights:
+        label_to_weight = normalize_weights(label_to_weight)
+    weight_values = list(label_to_weight.values())
+    logging.info(
+        f'class weights ({args.loss_type}): min={min(weight_values):.4f}, '
+        f'max={max(weight_values):.4f}, mean={float(np.mean(weight_values)):.4f}'
+    )
+    with open(os.path.join(save_dir, 'class_weights.json'), 'w', encoding='utf-8') as f:
+        json.dump(label_to_weight, f, ensure_ascii=False, indent=2)
+
+    save_label_classes(label_encoder, save_dir)
+    save_train_args(args, save_dir, num_classes)
+
+    # 3. split dataset
+    counts = label_counts
+    rare_labels = counts[counts < 2].index
+    df_rare = raw_train_df[raw_train_df['label'].isin(rare_labels)]
+    df_common = raw_train_df[~raw_train_df['label'].isin(rare_labels)]
+
+    if len(df_common) == 0:
+        raise ValueError("data num < 2, can't split dataset")
+
+    train_c, val_c = train_test_split(
+        df_common,
+        test_size=args.val_ratio,
+        stratify=df_common['label'],
+        random_state=args.random_seed,
+    )
+    train_df = pd.concat([train_c, df_rare]).sample(frac=1, random_state=args.random_seed).reset_index(drop=True)
+    val_df = val_c.reset_index(drop=True)
+    logging.info(f'split success: train={len(train_df)}, val={len(val_df)}')
+
+    # 4. Tokenizer & DataLoader
+    tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False)
+    train_loader = DataLoader(
+        RelationDataset(
+            train_df,
+            tokenizer,
+            label_encoder,
+            args.max_length,
+            args.tokens_per_column,
+        ),
+        batch_size=args.batch_size,
+        shuffle=True,
+        collate_fn=dynamic_collate_fn,
+        num_workers=args.num_workers,
+        pin_memory=device.type == 'cuda',
+    )
+    val_loader = DataLoader(
+        RelationDataset(
+            val_df,
+            tokenizer,
+            label_encoder,
+            args.max_length,
+            args.tokens_per_column,
+        ),
+        batch_size=args.batch_size,
+        shuffle=False,
+        collate_fn=dynamic_collate_fn,
+        num_workers=args.num_workers,
+        pin_memory=device.type == 'cuda',
+    )
+
+    # 5. model init
+    dropout = getattr(args, 'dropout', 0.1)
+    weight_decay = getattr(args, 'weight_decay', 0.0)
+    model = CPADoduoModel(
+        model_name,
+        num_classes,
+        args.use_flash_attention,
+        dropout=dropout,
+        pair_head=args.pair_head,
+    ).to(device)
+    steps_per_epoch = optimizer_steps_per_epoch(len(train_loader), grad_accum)
+    total_steps = max(1, steps_per_epoch * args.epoch)
+    warmup_steps = int(total_steps * args.warmup_ratio)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=weight_decay)
+    lr_scheduler = get_linear_schedule_with_warmup(
+        optimizer,
+        num_warmup_steps=warmup_steps,
+        num_training_steps=total_steps,
+    )
+    if args.loss_type == 'competition':
+        class_weights = weights_tensor_for_encoder(label_encoder, label_to_weight, device)
+        loss_fn = nn.CrossEntropyLoss(weight=class_weights)
+        logging.info('loss: CrossEntropyLoss with competition class weights')
+    else:
+        loss_fn = nn.CrossEntropyLoss()
+        logging.info('loss: unweighted CrossEntropyLoss')
+
+    use_amp = args.use_amp and device.type == 'cuda'
+    scaler = torch.amp.GradScaler('cuda', enabled=use_amp)
+
+    # 6. training
+    best_acc = 0.0
+    best_score_final = 0.0
+    best_selection_value = 0.0
+    patience_counter = 0
+    patience_limit = args.patience
+    selection_metric = args.selection_metric
+
+    logging.info(f'selection metric for early stopping: {selection_metric}')
+
+    logging.info('start training...')
+    for epoch in range(args.epoch):
+        model.train()
+        tr_loss = 0.0
+        train_steps = 0
+
+        pbar = tqdm(train_loader, desc=f'Epoch {epoch + 1}/{args.epoch}')
+        optimizer.zero_grad(set_to_none=True)
+        micro_step = 0
+        for batch in pbar:
+            if batch is None:
+                continue
+
+            input_ids = batch['input_ids'].to(device)
+            mask = batch['attention_mask'].to(device)
+            subject_cls_idx = batch['subject_cls_idx'].to(device)
+            object_cls_idx = batch['object_cls_idx'].to(device)
+            label_ids = batch['label'].to(device)
+
+            with torch.amp.autocast(device_type=device.type, enabled=use_amp):
+                logits = model(input_ids, mask, subject_cls_idx, object_cls_idx)
+                loss = loss_fn(logits, label_ids) / grad_accum
+
+            if use_amp:
+                scaler.scale(loss).backward()
+            else:
+                loss.backward()
+
+            micro_step += 1
+            loss_value = float(loss.item()) * grad_accum
+            tr_loss += loss_value
+            train_steps += 1
+
+            if micro_step % grad_accum == 0:
+                if use_amp:
+                    scaler.step(optimizer)
+                    scaler.update()
+                else:
+                    optimizer.step()
+                optimizer.zero_grad(set_to_none=True)
+                lr_scheduler.step()
+
+            pbar.set_postfix({'loss': f'{loss_value:.4f}'})
+
+        if micro_step % grad_accum != 0:
+            if use_amp:
+                scaler.step(optimizer)
+                scaler.update()
+            else:
+                optimizer.step()
+            optimizer.zero_grad(set_to_none=True)
+            lr_scheduler.step()
+
+        # val stage
+        model.eval()
+        val_true_ids = []
+        val_pred_ids = []
+        with torch.no_grad():
+            for batch in val_loader:
+                if batch is None:
+                    continue
+
+                input_ids = batch['input_ids'].to(device)
+                mask = batch['attention_mask'].to(device)
+                subject_cls_idx = batch['subject_cls_idx'].to(device)
+                object_cls_idx = batch['object_cls_idx'].to(device)
+                label_ids = batch['label'].to(device)
+
+                with torch.amp.autocast(device_type=device.type, enabled=use_amp):
+                    logits = model(input_ids, mask, subject_cls_idx, object_cls_idx)
+
+                preds = torch.argmax(logits, dim=1)
+                val_true_ids.extend(label_ids.cpu().tolist())
+                val_pred_ids.extend(preds.cpu().tolist())
+
+        val_true_labels = ids_to_labels(label_encoder, val_true_ids)
+        val_pred_labels = ids_to_labels(label_encoder, val_pred_ids)
+        avg_train_loss = tr_loss / max(1, train_steps)
+        val_acc = compute_accuracy(val_true_labels, val_pred_labels)
+        val_score_final = compute_score_final(val_true_labels, val_pred_labels, label_to_weight)
+        logging.info(
+            f'Epoch {epoch + 1} | Loss: {avg_train_loss:.4f} | '
+            f'Val Acc: {val_acc:.4f} | Val Score_final: {val_score_final:.4f}'
+        )
+
+        if optuna_trial is not None:
+            import optuna
+
+            optuna_trial.report(val_score_final, epoch)
+            if optuna_trial.should_prune():
+                raise optuna.TrialPruned()
+
+        if val_acc > best_acc:
+            best_acc = val_acc
+        if val_score_final > best_score_final:
+            best_score_final = val_score_final
+
+        current_metric = val_score_final if selection_metric == 'score_final' else val_acc
+        if current_metric > best_selection_value:
+            best_selection_value = current_metric
+            patience_counter = 0
+            torch.save(model.state_dict(), os.path.join(save_dir, 'best_model.pt'))
+            try:
+                tokenizer.save_pretrained(save_dir)
+            except Exception:
+                pass
+            logging.info(
+                f'best model! ({selection_metric}={current_metric:.4f}, '
+                f'acc={val_acc:.4f}, score_final={val_score_final:.4f})'
+            )
+        else:
+            patience_counter += 1
+            logging.info(f'early stop count: {patience_counter}/{patience_limit}')
+            if patience_counter == patience_limit:
+                logging.info(f'{patience_limit} epoch not up, early stop!!!')
+                break
+
+    logging.info(
+        f'train finish, best acc: {best_acc:.4f}, best score_final: {best_score_final:.4f}'
+    )
+    return {
+        'best_acc': best_acc,
+        'best_score_final': best_score_final,
+        'save_dir': save_dir,
+    }
+
+
+def build_train_parser():
+    parser = argparse.ArgumentParser(description='Train CPA relation classifier')
+    parser.add_argument('--train_dir', type=str, default="../dataset/Train_Set")
+    parser.add_argument('--output_dir', type=str, default='./cpa_output')
+    parser.add_argument('--run_name', type=str, default=None, help='Fixed output subdir cpa_{run_name} (for Optuna trials)')
+    parser.add_argument('--shortcut_name', type=str, default='../../deberta-v3-large')
+    parser.add_argument('--batch_size', type=int, default=24)
+    parser.add_argument('--gradient_accumulation_steps', type=int, default=2)
+    parser.add_argument('--epoch', type=int, default=20)
+    parser.add_argument('--lr', type=float, default=5e-5)
+    parser.add_argument('--max_length', type=int, default=128)
+    parser.add_argument('--random_seed', type=int, default=42)
+    parser.add_argument('--num_workers', type=int, default=0)
+    parser.add_argument('--dropout', type=float, default=0.1)
+    parser.add_argument('--weight_decay', type=float, default=0.0)
+    parser.add_argument(
+        '--tokens_per_column',
+        type=int,
+        default=8,
+        help='Doduo-style cap on tokens kept for each pseudo-column; <=0 disables the cap',
+    )
+    parser.add_argument(
+        '--pair_head',
+        type=str,
+        default='interaction',
+        choices=['concat', 'interaction'],
+        help='How to combine the Subject/Object [CLS] column embeddings',
+    )
+    parser.add_argument('--use_flash_attention', action='store_true')
+    parser.add_argument('--use_amp', action='store_true', default=True)
+    parser.add_argument('--no_amp', action='store_false', dest='use_amp')
+    parser.add_argument('--warmup_ratio', type=float, default=0.1)
+    parser.add_argument('--patience', type=int, default=3)
+    parser.add_argument('--val_ratio', type=float, default=0.1)
+    parser.add_argument('--device', type=str, default='gpu')
+    parser.add_argument('--loss_type', type=str, default='competition', choices=['competition', 'ce'])
+    parser.add_argument(
+        '--selection_metric',
+        type=str,
+        default='score_final',
+        choices=['score_final', 'acc'],
+    )
+    parser.add_argument('--normalize_class_weights', action='store_true', default=True)
+    parser.add_argument('--no_normalize_class_weights', action='store_false', dest='normalize_class_weights')
+    parser.add_argument(
+        '--architecture',
+        type=str,
+        default='doduo_pair_cls',
+        choices=['doduo_pair_cls'],
+        help='Reference architecture marker saved into train_args.json',
+    )
+    return parser
+
+
+if __name__ == '__main__':
+    args = build_train_parser().parse_args()
+    run_training(args)

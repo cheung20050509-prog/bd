@@ -13,6 +13,7 @@ deberta-v3-large/
 
 # Extracted training data (use dataset/Train_Set.zip)
 dataset/Train_Set/
+**/dataset/Train_Set/
 
 # Python
 __pycache__/

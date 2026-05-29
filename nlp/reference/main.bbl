@@ -1,0 +1,1136 @@
+%%% -*-BibTeX-*-
+%%% Do NOT edit. File created by BibTeX with style
+%%% ACM-Reference-Format-Journals [18-Jan-2012].
+
+\begin{thebibliography}{67}
+
+%%% ====================================================================
+%%% NOTE TO THE USER: you can override these defaults by providing
+%%% customized versions of any of these macros before the \bibliography
+%%% command.  Each of them MUST provide its own final punctuation,
+%%% except for \shownote{}, \showDOI{}, and \showURL{}.  The latter two
+%%% do not use final punctuation, in order to avoid confusing it with
+%%% the Web address.
+%%%
+%%% To suppress output of a particular field, define its macro to expand
+%%% to an empty string, or better, \unskip, like this:
+%%%
+%%% \newcommand{\showDOI}[1]{\unskip}   % LaTeX syntax
+%%%
+%%% \def \showDOI #1{\unskip}           % plain TeX syntax
+%%%
+%%% ====================================================================
+
+\ifx \showCODEN    \undefined \def \showCODEN     #1{\unskip}     \fi
+\ifx \showDOI      \undefined \def \showDOI       #1{#1}\fi
+\ifx \showISBNx    \undefined \def \showISBNx     #1{\unskip}     \fi
+\ifx \showISBNxiii \undefined \def \showISBNxiii  #1{\unskip}     \fi
+\ifx \showISSN     \undefined \def \showISSN      #1{\unskip}     \fi
+\ifx \showLCCN     \undefined \def \showLCCN      #1{\unskip}     \fi
+\ifx \shownote     \undefined \def \shownote      #1{#1}          \fi
+\ifx \showarticletitle \undefined \def \showarticletitle #1{#1}   \fi
+\ifx \showURL      \undefined \def \showURL       {\relax}        \fi
+% The following commands are used for tagged output and should be
+% invisible to TeX
+\providecommand\bibfield[2]{#2}
+\providecommand\bibinfo[2]{#2}
+\providecommand\natexlab[1]{#1}
+\providecommand\showeprint[2][]{arXiv:#2}
+
+\bibitem[\protect\citeauthoryear{Bojanowski, Grave, Joulin, and
+  Mikolov}{Bojanowski et~al\mbox{.}}{2017}]%
+        {bojanowski2016enriching}
+\bibfield{author}{\bibinfo{person}{Piotr Bojanowski}, \bibinfo{person}{Edouard
+  Grave}, \bibinfo{person}{Armand Joulin}, {and} \bibinfo{person}{Tomas
+  Mikolov}.} \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{Enriching Word Vectors with Subword Information}.
+\newblock \bibinfo{journal}{\emph{Transactions of the Association for
+  Computational Linguistics}}  \bibinfo{volume}{5} (\bibinfo{year}{2017}),
+  \bibinfo{pages}{135--146}.
+\newblock
+\urldef\tempurl%
+\url{https://doi.org/10.1162/tacl_a_00051}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Bollacker, Evans, Paritosh, Sturge, and
+  Taylor}{Bollacker et~al\mbox{.}}{2008}]%
+        {bollacker2008freebase}
+\bibfield{author}{\bibinfo{person}{Kurt Bollacker}, \bibinfo{person}{Colin
+  Evans}, \bibinfo{person}{Praveen Paritosh}, \bibinfo{person}{Tim Sturge},
+  {and} \bibinfo{person}{Jamie Taylor}.} \bibinfo{year}{2008}\natexlab{}.
+\newblock \showarticletitle{Freebase: a collaboratively created graph database
+  for structuring human knowledge}. In \bibinfo{booktitle}{\emph{SIGMOD}}.
+  \bibinfo{pages}{1247--1250}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Brunner and Stockinger}{Brunner and
+  Stockinger}{2020}]%
+        {Brunner:2020:EDBT:BERT4EM}
+\bibfield{author}{\bibinfo{person}{Ursin Brunner} {and} \bibinfo{person}{Kurt
+  Stockinger}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{Entity Matching with Transformer Architectures -
+  {A} Step Forward in Data Integration}. In
+  \bibinfo{booktitle}{\emph{Proceedings of the 23rd International Conference on
+  Extending Database Technology, {EDBT} 2020, Copenhagen, Denmark, March 30 -
+  April 02, 2020}}, \bibfield{editor}{\bibinfo{person}{Angela Bonifati},
+  \bibinfo{person}{Yongluan Zhou}, \bibinfo{person}{Marcos Antonio~Vaz Salles},
+  \bibinfo{person}{Alexander B{\"{o}}hm}, \bibinfo{person}{Dan Olteanu},
+  \bibinfo{person}{George H.~L. Fletcher}, \bibinfo{person}{Arijit Khan}, {and}
+  \bibinfo{person}{Bin Yang}} (Eds.). \bibinfo{publisher}{OpenProceedings.org},
+  \bibinfo{pages}{463--473}.
+\newblock
+\urldef\tempurl%
+\url{https://doi.org/10.5441/002/edbt.2020.58}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Cannaviccio, Barbosa, and
+  Merialdo}{Cannaviccio et~al\mbox{.}}{2018}]%
+        {Cannaviccio:2018:WWW:TowardsAnnotationgRelational}
+\bibfield{author}{\bibinfo{person}{Matteo Cannaviccio},
+  \bibinfo{person}{Denilson Barbosa}, {and} \bibinfo{person}{Paolo Merialdo}.}
+  \bibinfo{year}{2018}\natexlab{}.
+\newblock \showarticletitle{Towards Annotating Relational Data on the Web with
+  Language Models}. In \bibinfo{booktitle}{\emph{Proceedings of the 2018 World
+  Wide Web Conference}} (Lyon, France) \emph{(\bibinfo{series}{WWW '18})}.
+  \bibinfo{publisher}{International World Wide Web Conferences Steering
+  Committee}, \bibinfo{address}{Republic and Canton of Geneva, CHE},
+  \bibinfo{pages}{1307–1316}.
+\newblock
+\showISBNx{9781450356398}
+\urldef\tempurl%
+\url{https://doi.org/10.1145/3178876.3186029}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Cappuzzo, Papotti, and
+  Thirumuruganathan}{Cappuzzo et~al\mbox{.}}{2020}]%
+        {Cappuzzo:2020:SIGMOD:CreatingEmbeddings}
+\bibfield{author}{\bibinfo{person}{Riccardo Cappuzzo}, \bibinfo{person}{Paolo
+  Papotti}, {and} \bibinfo{person}{Saravanan Thirumuruganathan}.}
+  \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{Creating Embeddings of Heterogeneous Relational
+  Datasets for Data Integration Tasks}. In
+  \bibinfo{booktitle}{\emph{Proceedings of the 2020 ACM SIGMOD International
+  Conference on Management of Data}} (Portland, OR, USA)
+  \emph{(\bibinfo{series}{SIGMOD '20})}. \bibinfo{publisher}{Association for
+  Computing Machinery}, \bibinfo{address}{New York, NY, USA},
+  \bibinfo{pages}{1335–1349}.
+\newblock
+\showISBNx{9781450367356}
+\urldef\tempurl%
+\url{https://doi.org/10.1145/3318464.3389742}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Caruana}{Caruana}{1993}]%
+        {Caruana:1993:MTLHardParameterSharing}
+\bibfield{author}{\bibinfo{person}{Rich Caruana}.}
+  \bibinfo{year}{1993}\natexlab{}.
+\newblock \showarticletitle{Multitask Learning: A Knowledge-Based Source of
+  Inductive Bias}. In \bibinfo{booktitle}{\emph{Proceedings of the Tenth
+  International Conference on International Conference on Machine Learning}}
+  (Amherst, MA, USA) \emph{(\bibinfo{series}{ICML'93})}.
+  \bibinfo{publisher}{Morgan Kaufmann Publishers Inc.}, \bibinfo{address}{San
+  Francisco, CA, USA}, \bibinfo{pages}{41–48}.
+\newblock
+\showISBNx{1558603077}
+
+
+\bibitem[\protect\citeauthoryear{Caruana}{Caruana}{2004}]%
+        {Caruana:2004:MTL}
+\bibfield{author}{\bibinfo{person}{R. Caruana}.}
+  \bibinfo{year}{2004}\natexlab{}.
+\newblock \showarticletitle{Multitask Learning}.
+\newblock \bibinfo{journal}{\emph{Machine Learning}}  \bibinfo{volume}{28}
+  (\bibinfo{year}{2004}), \bibinfo{pages}{41--75}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Chapman, Simperl, Koesten, Konstantinidis,
+  Ib{\'{a}}{\~{n}}ez, Kacprzak, and Groth}{Chapman et~al\mbox{.}}{2020}]%
+        {Chapman:2020:DatasetSearch}
+\bibfield{author}{\bibinfo{person}{Adriane Chapman}, \bibinfo{person}{Elena
+  Simperl}, \bibinfo{person}{Laura Koesten}, \bibinfo{person}{George
+  Konstantinidis}, \bibinfo{person}{Luis{-}Daniel Ib{\'{a}}{\~{n}}ez},
+  \bibinfo{person}{Emilia Kacprzak}, {and} \bibinfo{person}{Paul Groth}.}
+  \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{Dataset search: a survey}.
+\newblock \bibinfo{journal}{\emph{{VLDB} J.}} \bibinfo{volume}{29},
+  \bibinfo{number}{1} (\bibinfo{year}{2020}), \bibinfo{pages}{251--272}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Chen, Jim{\'{e}}nez{-}Ruiz, Horrocks, and
+  Sutton}{Chen et~al\mbox{.}}{2019a}]%
+        {Chen:2019:AAAI:ColNet}
+\bibfield{author}{\bibinfo{person}{Jiaoyan Chen}, \bibinfo{person}{Ernesto
+  Jim{\'{e}}nez{-}Ruiz}, \bibinfo{person}{Ian Horrocks}, {and}
+  \bibinfo{person}{Charles Sutton}.} \bibinfo{year}{2019}\natexlab{a}.
+\newblock \showarticletitle{ColNet: Embedding the Semantics of Web Tables for
+  Column Type Prediction}. In \bibinfo{booktitle}{\emph{The Thirty-Third {AAAI}
+  Conference on Artificial Intelligence, {AAAI} 2019, The Thirty-First
+  Innovative Applications of Artificial Intelligence Conference, {IAAI} 2019,
+  The Ninth {AAAI} Symposium on Educational Advances in Artificial
+  Intelligence, {EAAI} 2019, Honolulu, Hawaii, USA, January 27 - February 1,
+  2019}}. \bibinfo{publisher}{{AAAI} Press}, \bibinfo{pages}{29--36}.
+\newblock
+\urldef\tempurl%
+\url{https://doi.org/10.1609/aaai.v33i01.330129}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Chen, Jim{\'{e}}nez{-}Ruiz, Horrocks, and
+  Sutton}{Chen et~al\mbox{.}}{2019b}]%
+        {Chen:2019:IJCAI:HNN}
+\bibfield{author}{\bibinfo{person}{Jiaoyan Chen}, \bibinfo{person}{Ernesto
+  Jim{\'{e}}nez{-}Ruiz}, \bibinfo{person}{Ian Horrocks}, {and}
+  \bibinfo{person}{Charles Sutton}.} \bibinfo{year}{2019}\natexlab{b}.
+\newblock \showarticletitle{Learning Semantic Annotations for Tabular Data}. In
+  \bibinfo{booktitle}{\emph{Proceedings of the Twenty-Eighth International
+  Joint Conference on Artificial Intelligence, {IJCAI} 2019, Macao, China,
+  August 10-16, 2019}}, \bibfield{editor}{\bibinfo{person}{Sarit Kraus}} (Ed.).
+  \bibinfo{publisher}{ijcai.org}, \bibinfo{pages}{2088--2094}.
+\newblock
+\urldef\tempurl%
+\url{https://doi.org/10.24963/ijcai.2019/289}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Clark, Khandelwal, Levy, and Manning}{Clark
+  et~al\mbox{.}}{2019}]%
+        {Clark:2019:WhatDoesBERTLookAt}
+\bibfield{author}{\bibinfo{person}{Kevin Clark}, \bibinfo{person}{Urvashi
+  Khandelwal}, \bibinfo{person}{Omer Levy}, {and}
+  \bibinfo{person}{Christopher~D. Manning}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{What Does {BERT} Look at? An Analysis of {BERT}{'}s
+  Attention}. In \bibinfo{booktitle}{\emph{Proc. BlackBoxNLP '19}}.
+  \bibinfo{pages}{276--286}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Deng, Fernandez, Abedjan, Wang, Stonebraker,
+  Elmagarmid, Ilyas, Madden, Ouzzani, and Tang}{Deng et~al\mbox{.}}{2017}]%
+        {Deng:2018:CIDR}
+\bibfield{author}{\bibinfo{person}{Dong Deng}, \bibinfo{person}{Raul~Castro
+  Fernandez}, \bibinfo{person}{Ziawasch Abedjan}, \bibinfo{person}{Sibo Wang},
+  \bibinfo{person}{Michael Stonebraker}, \bibinfo{person}{Ahmed~K. Elmagarmid},
+  \bibinfo{person}{Ihab~F. Ilyas}, \bibinfo{person}{Samuel Madden},
+  \bibinfo{person}{Mourad Ouzzani}, {and} \bibinfo{person}{Nan Tang}.}
+  \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{The Data Civilizer System}. In
+  \bibinfo{booktitle}{\emph{8th Biennial Conference on Innovative Data Systems
+  Research, {CIDR} 2017, Chaminade, CA, USA, January 8-11, 2017, Online
+  Proceedings}}. \bibinfo{publisher}{www.cidrdb.org}.
+\newblock
+\urldef\tempurl%
+\url{http://cidrdb.org/cidr2017/papers/p44-deng-cidr17.pdf}
+\showURL{%
+\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Deng, Sun, Lees, Wu, and Yu}{Deng
+  et~al\mbox{.}}{2020}]%
+        {Deng:2020:TURL}
+\bibfield{author}{\bibinfo{person}{Xiang Deng}, \bibinfo{person}{Huan Sun},
+  \bibinfo{person}{Alyssa Lees}, \bibinfo{person}{You Wu}, {and}
+  \bibinfo{person}{Cong Yu}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{TURL: Table Understanding through Representation
+  Learning}.
+\newblock \bibinfo{journal}{\emph{Proc. VLDB Endow.}} \bibinfo{volume}{14},
+  \bibinfo{number}{3} (\bibinfo{date}{nov} \bibinfo{year}{2020}),
+  \bibinfo{pages}{307–319}.
+\newblock
+\showISSN{2150-8097}
+\urldef\tempurl%
+\url{https://doi.org/10.14778/3430915.3430921}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Devlin, Chang, Lee, and Toutanova}{Devlin
+  et~al\mbox{.}}{2019}]%
+        {Devlin:2019:BERT}
+\bibfield{author}{\bibinfo{person}{Jacob Devlin}, \bibinfo{person}{Ming-Wei
+  Chang}, \bibinfo{person}{Kenton Lee}, {and} \bibinfo{person}{Kristina
+  Toutanova}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{{BERT}: Pre-training of Deep Bidirectional
+  Transformers for Language Understanding}. In
+  \bibinfo{booktitle}{\emph{Proceedings of the 2019 Conference of the North
+  {A}merican Chapter of the Association for Computational Linguistics: Human
+  Language Technologies, Volume 1 (Long and Short Papers)}}.
+  \bibinfo{publisher}{Association for Computational Linguistics},
+  \bibinfo{address}{Minneapolis, Minnesota}, \bibinfo{pages}{4171--4186}.
+\newblock
+\urldef\tempurl%
+\url{https://doi.org/10.18653/v1/N19-1423}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Do and Rahm}{Do and Rahm}{2002}]%
+        {do2002coma}
+\bibfield{author}{\bibinfo{person}{Hong-Hai Do} {and} \bibinfo{person}{Erhard
+  Rahm}.} \bibinfo{year}{2002}\natexlab{}.
+\newblock \showarticletitle{COMA—a system for flexible combination of schema
+  matching approaches}. In \bibinfo{booktitle}{\emph{VLDB'02: Proceedings of
+  the 28th International Conference on Very Large Databases}}. Elsevier,
+  \bibinfo{pages}{610--621}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Geva, Gupta, and Berant}{Geva
+  et~al\mbox{.}}{2020}]%
+        {geva2020injecting}
+\bibfield{author}{\bibinfo{person}{Mor Geva}, \bibinfo{person}{Ankit Gupta},
+  {and} \bibinfo{person}{Jonathan Berant}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{Injecting Numerical Reasoning Skills into Language
+  Models}. In \bibinfo{booktitle}{\emph{Proceedings of the 58th Annual Meeting
+  of the Association for Computational Linguistics}}.
+  \bibinfo{publisher}{Association for Computational Linguistics},
+  \bibinfo{address}{Online}, \bibinfo{pages}{946--958}.
+\newblock
+\urldef\tempurl%
+\url{https://doi.org/10.18653/v1/2020.acl-main.89}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{GLUE}{GLUE}{2021}]%
+        {glue}
+\bibfield{author}{\bibinfo{person}{GLUE}.} \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{GLUE Leaderboard}.
+\newblock \bibinfo{journal}{\emph{https://gluebenchmark.com/leaderboard}}
+  (\bibinfo{year}{2021}).
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Google}{Google}{[n.d.]}]%
+        {GoogleDataStudio}
+\bibfield{author}{\bibinfo{person}{Google}.} \bibinfo{year}{[n.d.]}\natexlab{}.
+\newblock \bibinfo{title}{Google Data Studio}.
+\newblock
+\newblock
+\urldef\tempurl%
+\url{https://datastudio.google.com/}
+\showURL{%
+\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Hashimoto, Xiong, Tsuruoka, and
+  Socher}{Hashimoto et~al\mbox{.}}{2017}]%
+        {Hashimoto:2017:EMNLP:JointMTL}
+\bibfield{author}{\bibinfo{person}{Kazuma Hashimoto}, \bibinfo{person}{Caiming
+  Xiong}, \bibinfo{person}{Yoshimasa Tsuruoka}, {and} \bibinfo{person}{Richard
+  Socher}.} \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{A Joint Many-Task Model: Growing a Neural Network
+  for Multiple {NLP} Tasks}. In \bibinfo{booktitle}{\emph{Proceedings of the
+  2017 Conference on Empirical Methods in Natural Language Processing}}.
+  \bibinfo{publisher}{Association for Computational Linguistics},
+  \bibinfo{address}{Copenhagen, Denmark}, \bibinfo{pages}{1923--1933}.
+\newblock
+\urldef\tempurl%
+\url{https://doi.org/10.18653/v1/D17-1206}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Herzig, Nowak, M{\"u}ller, Piccinno, and
+  Eisenschlos}{Herzig et~al\mbox{.}}{2020}]%
+        {herzig2020tapas}
+\bibfield{author}{\bibinfo{person}{Jonathan Herzig},
+  \bibinfo{person}{Pawel~Krzysztof Nowak}, \bibinfo{person}{Thomas M{\"u}ller},
+  \bibinfo{person}{Francesco Piccinno}, {and} \bibinfo{person}{Julian
+  Eisenschlos}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{{T}a{P}as: Weakly Supervised Table Parsing via
+  Pre-training}. In \bibinfo{booktitle}{\emph{Proceedings of the 58th Annual
+  Meeting of the Association for Computational Linguistics}}.
+  \bibinfo{publisher}{Association for Computational Linguistics},
+  \bibinfo{address}{Online}, \bibinfo{pages}{4320--4333}.
+\newblock
+\urldef\tempurl%
+\url{https://doi.org/10.18653/v1/2020.acl-main.398}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Hu, Gaikwad, Hulsebos, Bakker, Zgraggen,
+  Hidalgo, Kraska, Li, Satyanarayan, and Demiralp}{Hu et~al\mbox{.}}{2019}]%
+        {Hu:2019:CHI:VizNet}
+\bibfield{author}{\bibinfo{person}{Kevin Hu}, \bibinfo{person}{Snehalkumar
+  'Neil'~S. Gaikwad}, \bibinfo{person}{Madelon Hulsebos},
+  \bibinfo{person}{Michiel~A. Bakker}, \bibinfo{person}{Emanuel Zgraggen},
+  \bibinfo{person}{C\'{e}sar Hidalgo}, \bibinfo{person}{Tim Kraska},
+  \bibinfo{person}{Guoliang Li}, \bibinfo{person}{Arvind Satyanarayan}, {and}
+  \bibinfo{person}{\c{C}a\u{g}atay Demiralp}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{{VizNet}: Towards A Large-Scale Visualization
+  Learning and Benchmarking Repository}. In
+  \bibinfo{booktitle}{\emph{Proceedings of the 2019 CHI Conference on Human
+  Factors in Computing Systems}} (Glasgow, Scotland Uk)
+  \emph{(\bibinfo{series}{CHI '19})}. \bibinfo{publisher}{Association for
+  Computing Machinery}, \bibinfo{address}{New York, NY, USA},
+  \bibinfo{pages}{1–12}.
+\newblock
+\showISBNx{9781450359702}
+\urldef\tempurl%
+\url{https://doi.org/10.1145/3290605.3300892}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Hulsebos, Hu, Bakker, Zgraggen, Satyanarayan,
+  Kraska, Demiralp, and Hidalgo}{Hulsebos et~al\mbox{.}}{2019}]%
+        {Hulsebos:2019:Sherlock}
+\bibfield{author}{\bibinfo{person}{Madelon Hulsebos}, \bibinfo{person}{Kevin
+  Hu}, \bibinfo{person}{Michiel Bakker}, \bibinfo{person}{Emanuel Zgraggen},
+  \bibinfo{person}{Arvind Satyanarayan}, \bibinfo{person}{Tim Kraska},
+  \bibinfo{person}{\c{C}agatay Demiralp}, {and} \bibinfo{person}{C\'{e}sar
+  Hidalgo}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{Sherlock: A Deep Learning Approach to Semantic Data
+  Type Detection}. In \bibinfo{booktitle}{\emph{Proceedings of the 25th ACM
+  SIGKDD International Conference on Knowledge Discovery \& Data Mining}}
+  (Anchorage, AK, USA) \emph{(\bibinfo{series}{KDD '19})}.
+  \bibinfo{publisher}{Association for Computing Machinery},
+  \bibinfo{address}{New York, NY, USA}, \bibinfo{pages}{1500–1508}.
+\newblock
+\showISBNx{9781450362016}
+\urldef\tempurl%
+\url{https://doi.org/10.1145/3292500.3330993}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Jiang, Xu, Araki, and Neubig}{Jiang
+  et~al\mbox{.}}{2020}]%
+        {Jiang:2020:HowCanWeKnowLM}
+\bibfield{author}{\bibinfo{person}{Zhengbao Jiang}, \bibinfo{person}{Frank~F.
+  Xu}, \bibinfo{person}{Jun Araki}, {and} \bibinfo{person}{Graham Neubig}.}
+  \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{How Can We Know What Language Models Know?}
+\newblock \bibinfo{journal}{\emph{Transactions of the Association for
+  Computational Linguistics}}  \bibinfo{volume}{8} (\bibinfo{year}{2020}),
+  \bibinfo{pages}{423--438}.
+\newblock
+\urldef\tempurl%
+\url{https://doi.org/10.1162/tacl_a_00324}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Khurana and Galhotra}{Khurana and
+  Galhotra}{2021}]%
+        {Khurana:2020:SemanticAnnotation4TabularData}
+\bibfield{author}{\bibinfo{person}{Udayan Khurana} {and}
+  \bibinfo{person}{Sainyam Galhotra}.} \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{Semantic Concept Annotation for Tabular Data}. In
+  \bibinfo{booktitle}{\emph{Proceedings of the 30th ACM International
+  Conference on Information \& Knowledge Management}}.
+  \bibinfo{publisher}{Association for Computing Machinery},
+  \bibinfo{address}{New York, NY, USA}, \bibinfo{pages}{844–853}.
+\newblock
+\showISBNx{9781450384469}
+\urldef\tempurl%
+\url{https://doi.org/10.1145/3459637.3482295}
+\showURL{%
+\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Koutras, Siachamis, Ionescu, Psarakis, Brons,
+  Fragkoulis, Lofi, Bonifati, and Katsifodimos}{Koutras et~al\mbox{.}}{2021}]%
+        {koutras2021valentine}
+\bibfield{author}{\bibinfo{person}{Christos Koutras}, \bibinfo{person}{George
+  Siachamis}, \bibinfo{person}{Andra Ionescu}, \bibinfo{person}{Kyriakos
+  Psarakis}, \bibinfo{person}{Jerry Brons}, \bibinfo{person}{Marios
+  Fragkoulis}, \bibinfo{person}{Christoph Lofi}, \bibinfo{person}{Angela
+  Bonifati}, {and} \bibinfo{person}{Asterios Katsifodimos}.}
+  \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{Valentine: Evaluating Matching Techniques for
+  Dataset Discovery}. In \bibinfo{booktitle}{\emph{2021 IEEE 37th International
+  Conference on Data Engineering (ICDE)}}. IEEE, \bibinfo{pages}{468--479}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Li, Li, Suhara, Doan, and Tan}{Li
+  et~al\mbox{.}}{2020}]%
+        {Li:2020:Ditto}
+\bibfield{author}{\bibinfo{person}{Yuliang Li}, \bibinfo{person}{Jinfeng Li},
+  \bibinfo{person}{Yoshihiko Suhara}, \bibinfo{person}{AnHai Doan}, {and}
+  \bibinfo{person}{Wang-Chiew Tan}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{Deep entity matching with pre-trained language
+  models}.
+\newblock \bibinfo{journal}{\emph{Proceedings of the VLDB Endowment}}
+  \bibinfo{volume}{14}, \bibinfo{number}{1} (\bibinfo{date}{Sep}
+  \bibinfo{year}{2020}), \bibinfo{pages}{50–60}.
+\newblock
+\showISSN{2150-8097}
+\urldef\tempurl%
+\url{https://doi.org/10.14778/3421424.3421431}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Li, Li, Suhara, Wang, Hirota, and Tan}{Li
+  et~al\mbox{.}}{2021}]%
+        {Li:2021:JDIQ:DeepEntityMatching}
+\bibfield{author}{\bibinfo{person}{Yuliang Li}, \bibinfo{person}{Jinfeng Li},
+  \bibinfo{person}{Yoshihiko Suhara}, \bibinfo{person}{Jin Wang},
+  \bibinfo{person}{Wataru Hirota}, {and} \bibinfo{person}{Wang-Chiew Tan}.}
+  \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{Deep Entity Matching: Challenges and
+  Opportunities}.
+\newblock \bibinfo{journal}{\emph{J. Data and Information Quality}}
+  \bibinfo{volume}{13}, \bibinfo{number}{1}, Article \bibinfo{articleno}{1}
+  (\bibinfo{date}{Jan.} \bibinfo{year}{2021}), \bibinfo{numpages}{17}~pages.
+\newblock
+\showISSN{1936-1955}
+\urldef\tempurl%
+\url{https://doi.org/10.1145/3431816}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Limaye, Sarawagi, and Chakrabarti}{Limaye
+  et~al\mbox{.}}{2010}]%
+        {Limaye:2010:VLDB:AnnotatingWebTables}
+\bibfield{author}{\bibinfo{person}{Girija Limaye}, \bibinfo{person}{Sunita
+  Sarawagi}, {and} \bibinfo{person}{Soumen Chakrabarti}.}
+  \bibinfo{year}{2010}\natexlab{}.
+\newblock \showarticletitle{Annotating and Searching Web Tables Using Entities,
+  Types and Relationships}.
+\newblock \bibinfo{journal}{\emph{Proc. VLDB Endow.}} \bibinfo{volume}{3},
+  \bibinfo{number}{1–2} (\bibinfo{date}{Sept.} \bibinfo{year}{2010}),
+  \bibinfo{pages}{1338–1347}.
+\newblock
+\showISSN{2150-8097}
+\urldef\tempurl%
+\url{https://doi.org/10.14778/1920841.1921005}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Macdonald and Barbosa}{Macdonald and
+  Barbosa}{2020}]%
+        {Macdonald:2020:CIKM:NeuralRelationExtraction}
+\bibfield{author}{\bibinfo{person}{Erin Macdonald} {and}
+  \bibinfo{person}{Denilson Barbosa}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \bibinfo{booktitle}{\emph{Neural Relation Extraction on Wikipedia
+  Tables for Augmenting Knowledge Graphs}}.
+\newblock \bibinfo{publisher}{Association for Computing Machinery},
+  \bibinfo{address}{New York, NY, USA}, \bibinfo{pages}{2133–2136}.
+\newblock
+\showISBNx{9781450368599}
+\urldef\tempurl%
+\url{https://doi.org/10.1145/3340531.3412164}
+\showURL{%
+\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Mahdavi and Abedjan}{Mahdavi and
+  Abedjan}{2020}]%
+        {Mahdavi:2020:Baran}
+\bibfield{author}{\bibinfo{person}{Mohammad Mahdavi} {and}
+  \bibinfo{person}{Ziawasch Abedjan}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{{Baran}: Effective error correction via a unified
+  context representation and transfer learning}.
+\newblock \bibinfo{journal}{\emph{Proceedings of the VLDB Endowment (PVLDB)}}
+  \bibinfo{volume}{13}, \bibinfo{number}{11} (\bibinfo{year}{2020}),
+  \bibinfo{pages}{1948--1961}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Mahdavi, Abedjan, Castro~Fernandez, Madden,
+  Ouzzani, Stonebraker, and Tang}{Mahdavi et~al\mbox{.}}{2019}]%
+        {Mahdavi:2019:Raha}
+\bibfield{author}{\bibinfo{person}{Mohammad Mahdavi}, \bibinfo{person}{Ziawasch
+  Abedjan}, \bibinfo{person}{Raul Castro~Fernandez}, \bibinfo{person}{Samuel
+  Madden}, \bibinfo{person}{Mourad Ouzzani}, \bibinfo{person}{Michael
+  Stonebraker}, {and} \bibinfo{person}{Nan Tang}.}
+  \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{{Raha}: A configuration-free error detection
+  system}. In \bibinfo{booktitle}{\emph{Proceedings of the International
+  Conference on Management of Data (SIGMOD)}}. ACM, \bibinfo{pages}{865--882}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Mikolov, Chen, Corrado, and Dean}{Mikolov
+  et~al\mbox{.}}{2013}]%
+        {mikolov2013word2vec}
+\bibfield{author}{\bibinfo{person}{Tom{\'{a}}s Mikolov}, \bibinfo{person}{Kai
+  Chen}, \bibinfo{person}{Greg Corrado}, {and} \bibinfo{person}{Jeffrey Dean}.}
+  \bibinfo{year}{2013}\natexlab{}.
+\newblock \showarticletitle{Efficient Estimation of Word Representations in
+  Vector Space}. In \bibinfo{booktitle}{\emph{1st International Conference on
+  Learning Representations, {ICLR} 2013, Scottsdale, Arizona, USA, May 2-4,
+  2013, Workshop Track Proceedings}}, \bibfield{editor}{\bibinfo{person}{Yoshua
+  Bengio} {and} \bibinfo{person}{Yann LeCun}} (Eds.).
+\newblock
+\urldef\tempurl%
+\url{http://arxiv.org/abs/1301.3781}
+\showURL{%
+\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Miller}{Miller}{2018}]%
+        {Miller:2018:VLDB:OpenDataIntegration}
+\bibfield{author}{\bibinfo{person}{Ren\'{e}e~J. Miller}.}
+  \bibinfo{year}{2018}\natexlab{}.
+\newblock \showarticletitle{Open Data Integration}.
+\newblock \bibinfo{journal}{\emph{Proc. VLDB Endow.}} \bibinfo{volume}{11},
+  \bibinfo{number}{12} (\bibinfo{date}{Aug.} \bibinfo{year}{2018}),
+  \bibinfo{pages}{2130–2139}.
+\newblock
+\showISSN{2150-8097}
+\urldef\tempurl%
+\url{https://doi.org/10.14778/3229863.3240491}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Mu\~{n}oz, Hogan, and Mileo}{Mu\~{n}oz
+  et~al\mbox{.}}{2014}]%
+        {Munoz:2014:WSDM:UsingLinkedData}
+\bibfield{author}{\bibinfo{person}{Emir Mu\~{n}oz}, \bibinfo{person}{Aidan
+  Hogan}, {and} \bibinfo{person}{Alessandra Mileo}.}
+  \bibinfo{year}{2014}\natexlab{}.
+\newblock \showarticletitle{Using Linked Data to Mine RDF from Wikipedia's
+  Tables}. In \bibinfo{booktitle}{\emph{Proceedings of the 7th ACM
+  International Conference on Web Search and Data Mining}} (New York, New York,
+  USA) \emph{(\bibinfo{series}{WSDM '14})}. \bibinfo{publisher}{Association for
+  Computing Machinery}, \bibinfo{address}{New York, NY, USA},
+  \bibinfo{pages}{533–542}.
+\newblock
+\showISBNx{9781450323512}
+\urldef\tempurl%
+\url{https://doi.org/10.1145/2556195.2556266}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Nakashole, Weikum, and Suchanek}{Nakashole
+  et~al\mbox{.}}{2012}]%
+        {Nakashole:2012:PATTY}
+\bibfield{author}{\bibinfo{person}{Ndapandula Nakashole},
+  \bibinfo{person}{Gerhard Weikum}, {and} \bibinfo{person}{Fabian Suchanek}.}
+  \bibinfo{year}{2012}\natexlab{}.
+\newblock \showarticletitle{{PATTY}: A Taxonomy of Relational Patterns with
+  Semantic Types}. In \bibinfo{booktitle}{\emph{Proceedings of the 2012 Joint
+  Conference on Empirical Methods in Natural Language Processing and
+  Computational Natural Language Learning}}. \bibinfo{publisher}{Association
+  for Computational Linguistics}, \bibinfo{address}{Jeju Island, Korea},
+  \bibinfo{pages}{1135--1145}.
+\newblock
+\urldef\tempurl%
+\url{https://www.aclweb.org/anthology/D12-1104}
+\showURL{%
+\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Nguyen, Kertkeidkachorn, Ichise, and
+  Takeda}{Nguyen et~al\mbox{.}}{[n.d.]}]%
+        {Nguyen:2020:MTab4DBPedia}
+\bibfield{author}{\bibinfo{person}{Phuc Nguyen}, \bibinfo{person}{Natthawut
+  Kertkeidkachorn}, \bibinfo{person}{Ryutaro Ichise}, {and}
+  \bibinfo{person}{Hideaki Takeda}.} \bibinfo{year}{[n.d.]}\natexlab{}.
+\newblock \showarticletitle{{MTab4DBpedia}: Semantic Annotation for Tabular
+  Data with DBpedia}.
+\newblock  (\bibinfo{year}{[n.\,d.]}).
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Ota, M\"{u}ller, Freire, and Srivastava}{Ota
+  et~al\mbox{.}}{2020}]%
+        {Ota:2020:D4:VLDB}
+\bibfield{author}{\bibinfo{person}{Masayo Ota}, \bibinfo{person}{Heiko
+  M\"{u}ller}, \bibinfo{person}{Juliana Freire}, {and} \bibinfo{person}{Divesh
+  Srivastava}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{Data-Driven Domain Discovery for Structured
+  Datasets}.
+\newblock \bibinfo{journal}{\emph{Proc. VLDB Endow.}} \bibinfo{volume}{13},
+  \bibinfo{number}{7} (\bibinfo{date}{March} \bibinfo{year}{2020}),
+  \bibinfo{pages}{953–967}.
+\newblock
+\showISSN{2150-8097}
+\urldef\tempurl%
+\url{https://doi.org/10.14778/3384345.3384346}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Paszke, Gross, Massa, Lerer, Bradbury, Chanan,
+  Killeen, Lin, Gimelshein, Antiga, Desmaison, Kopf, Yang, DeVito, Raison,
+  Tejani, Chilamkurthy, Steiner, Fang, Bai, and Chintala}{Paszke
+  et~al\mbox{.}}{2019}]%
+        {PyTorch:NeurIPS2019}
+\bibfield{author}{\bibinfo{person}{Adam Paszke}, \bibinfo{person}{Sam Gross},
+  \bibinfo{person}{Francisco Massa}, \bibinfo{person}{Adam Lerer},
+  \bibinfo{person}{James Bradbury}, \bibinfo{person}{Gregory Chanan},
+  \bibinfo{person}{Trevor Killeen}, \bibinfo{person}{Zeming Lin},
+  \bibinfo{person}{Natalia Gimelshein}, \bibinfo{person}{Luca Antiga},
+  \bibinfo{person}{Alban Desmaison}, \bibinfo{person}{Andreas Kopf},
+  \bibinfo{person}{Edward Yang}, \bibinfo{person}{Zachary DeVito},
+  \bibinfo{person}{Martin Raison}, \bibinfo{person}{Alykhan Tejani},
+  \bibinfo{person}{Sasank Chilamkurthy}, \bibinfo{person}{Benoit Steiner},
+  \bibinfo{person}{Lu Fang}, \bibinfo{person}{Junjie Bai}, {and}
+  \bibinfo{person}{Soumith Chintala}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{{PyTorch}: An Imperative Style, High-Performance
+  Deep Learning Library}.
+\newblock In \bibinfo{booktitle}{\emph{Advances in Neural Information
+  Processing Systems 32}}, \bibfield{editor}{\bibinfo{person}{H.~Wallach},
+  \bibinfo{person}{H.~Larochelle}, \bibinfo{person}{A.~Beygelzimer},
+  \bibinfo{person}{F.~d\textquotesingle Alch\'{e}-Buc},
+  \bibinfo{person}{E.~Fox}, {and} \bibinfo{person}{R.~Garnett}} (Eds.).
+  \bibinfo{publisher}{Curran Associates, Inc.}, \bibinfo{pages}{8024--8035}.
+\newblock
+\urldef\tempurl%
+\url{http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf}
+\showURL{%
+\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Pennington, Socher, and Manning}{Pennington
+  et~al\mbox{.}}{2014}]%
+        {pennington-etal-2014-glove}
+\bibfield{author}{\bibinfo{person}{Jeffrey Pennington},
+  \bibinfo{person}{Richard Socher}, {and} \bibinfo{person}{Christopher
+  Manning}.} \bibinfo{year}{2014}\natexlab{}.
+\newblock \showarticletitle{{G}lo{V}e: Global Vectors for Word Representation}.
+  In \bibinfo{booktitle}{\emph{Proceedings of the 2014 Conference on Empirical
+  Methods in Natural Language Processing ({EMNLP})}}.
+  \bibinfo{publisher}{Association for Computational Linguistics},
+  \bibinfo{address}{Doha, Qatar}, \bibinfo{pages}{1532--1543}.
+\newblock
+\urldef\tempurl%
+\url{https://doi.org/10.3115/v1/D14-1162}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Petroni, Rockt{\"a}schel, Riedel, Lewis,
+  Bakhtin, Wu, and Miller}{Petroni et~al\mbox{.}}{2019}]%
+        {Petroni:2019:LAMA}
+\bibfield{author}{\bibinfo{person}{Fabio Petroni}, \bibinfo{person}{Tim
+  Rockt{\"a}schel}, \bibinfo{person}{Sebastian Riedel},
+  \bibinfo{person}{Patrick Lewis}, \bibinfo{person}{Anton Bakhtin},
+  \bibinfo{person}{Yuxiang Wu}, {and} \bibinfo{person}{Alexander Miller}.}
+  \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{Language Models as Knowledge Bases?}. In
+  \bibinfo{booktitle}{\emph{Proceedings of the 2019 Conference on Empirical
+  Methods in Natural Language Processing and the 9th International Joint
+  Conference on Natural Language Processing (EMNLP-IJCNLP)}}.
+  \bibinfo{publisher}{Association for Computational Linguistics},
+  \bibinfo{address}{Hong Kong, China}, \bibinfo{pages}{2463--2473}.
+\newblock
+\urldef\tempurl%
+\url{https://doi.org/10.18653/v1/D19-1250}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Rahm and Bernstein}{Rahm and
+  Bernstein}{2001}]%
+        {Rahm:2001:SchemaMatching}
+\bibfield{author}{\bibinfo{person}{Erhard Rahm} {and}
+  \bibinfo{person}{Philip~A. Bernstein}.} \bibinfo{year}{2001}\natexlab{}.
+\newblock \showarticletitle{A survey of approaches to automatic schema
+  matching}.
+\newblock \bibinfo{journal}{\emph{{VLDB} J.}} \bibinfo{volume}{10},
+  \bibinfo{number}{4} (\bibinfo{year}{2001}), \bibinfo{pages}{334--350}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Roberts, Raffel, and Shazeer}{Roberts
+  et~al\mbox{.}}{2020}]%
+        {Roberts:2020:HowMuchKnowledge}
+\bibfield{author}{\bibinfo{person}{Adam Roberts}, \bibinfo{person}{Colin
+  Raffel}, {and} \bibinfo{person}{Noam Shazeer}.}
+  \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{How Much Knowledge Can You Pack Into the Parameters
+  of a Language Model?}. In \bibinfo{booktitle}{\emph{Proceedings of the 2020
+  Conference on Empirical Methods in Natural Language Processing (EMNLP)}}.
+  \bibinfo{publisher}{Association for Computational Linguistics},
+  \bibinfo{address}{Online}, \bibinfo{pages}{5418--5426}.
+\newblock
+\urldef\tempurl%
+\url{https://doi.org/10.18653/v1/2020.emnlp-main.437}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Rogers, Kovaleva, and Rumshisky}{Rogers
+  et~al\mbox{.}}{2020}]%
+        {Rogers:2020:TACL:BERTology}
+\bibfield{author}{\bibinfo{person}{Anna Rogers}, \bibinfo{person}{Olga
+  Kovaleva}, {and} \bibinfo{person}{Anna Rumshisky}.}
+  \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{A Primer in {BERT}ology: What We Know About How
+  {BERT} Works}.
+\newblock \bibinfo{journal}{\emph{Transactions of the Association for
+  Computational Linguistics}}  \bibinfo{volume}{8} (\bibinfo{year}{2020}),
+  \bibinfo{pages}{842--866}.
+\newblock
+\urldef\tempurl%
+\url{https://doi.org/10.1162/tacl_a_00349}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Ruder}{Ruder}{2017}]%
+        {Ruder:2017:MTLOverview}
+\bibfield{author}{\bibinfo{person}{Sebastian Ruder}.}
+  \bibinfo{year}{2017}\natexlab{}.
+\newblock \bibinfo{title}{An Overview of Multi-Task Learning in Deep Neural
+  Networks}.
+\newblock
+\newblock
+\showeprint[arxiv]{1706.05098}~[cs.LG]
+
+
+\bibitem[\protect\citeauthoryear{Schelter, Lange, Schmidt, Celikel,
+  Bie{\ss}mann, and Grafberger}{Schelter et~al\mbox{.}}{2018}]%
+        {Schelter:2018:DataQuality}
+\bibfield{author}{\bibinfo{person}{Sebastian Schelter}, \bibinfo{person}{Dustin
+  Lange}, \bibinfo{person}{Philipp Schmidt}, \bibinfo{person}{Meltem Celikel},
+  \bibinfo{person}{Felix Bie{\ss}mann}, {and} \bibinfo{person}{Andreas
+  Grafberger}.} \bibinfo{year}{2018}\natexlab{}.
+\newblock \showarticletitle{Automating Large-Scale Data Quality Verification}.
+\newblock \bibinfo{journal}{\emph{Proc. {VLDB} Endow.}} \bibinfo{volume}{11},
+  \bibinfo{number}{12} (\bibinfo{year}{2018}), \bibinfo{pages}{1781--1794}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Software}{Software}{[n.d.]}]%
+        {Tableau}
+\bibfield{author}{\bibinfo{person}{Tableau Software}.}
+  \bibinfo{year}{[n.d.]}\natexlab{}.
+\newblock \bibinfo{title}{Tableau}.
+\newblock
+\newblock
+\urldef\tempurl%
+\url{https://www.tableau.com/}
+\showURL{%
+\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Sun, Wang, Li, Feng, Tian, Wu, and Wang}{Sun
+  et~al\mbox{.}}{2020}]%
+        {SunWLFTWW20aaai}
+\bibfield{author}{\bibinfo{person}{Yu Sun}, \bibinfo{person}{Shuohuan Wang},
+  \bibinfo{person}{Yu{-}Kun Li}, \bibinfo{person}{Shikun Feng},
+  \bibinfo{person}{Hao Tian}, \bibinfo{person}{Hua Wu}, {and}
+  \bibinfo{person}{Haifeng Wang}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{{ERNIE} 2.0: {A} Continual Pre-Training Framework
+  for Language Understanding}. In \bibinfo{booktitle}{\emph{{AAAI}}}.
+  \bibinfo{pages}{8968--8975}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Takeoka, Oyamada, Nakadai, and
+  Okadome}{Takeoka et~al\mbox{.}}{2019}]%
+        {Takeoka:2019:AAAI:Meimei}
+\bibfield{author}{\bibinfo{person}{Kunihiro Takeoka}, \bibinfo{person}{Masafumi
+  Oyamada}, \bibinfo{person}{Shinji Nakadai}, {and} \bibinfo{person}{Takeshi
+  Okadome}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{Meimei: An Efficient Probabilistic Approach for
+  Semantically Annotating Tables}.
+\newblock \bibinfo{journal}{\emph{Proceedings of the AAAI Conference on
+  Artificial Intelligence}} \bibinfo{volume}{33}, \bibinfo{number}{01}
+  (\bibinfo{date}{Jul.} \bibinfo{year}{2019}), \bibinfo{pages}{281--288}.
+\newblock
+\urldef\tempurl%
+\url{https://doi.org/10.1609/aaai.v33i01.3301281}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Tang, Fan, Li, Tu, Du, Li, Madden, and
+  Ouzzani}{Tang et~al\mbox{.}}{2021}]%
+        {Tang:2020:RelationalPretrained}
+\bibfield{author}{\bibinfo{person}{Nan Tang}, \bibinfo{person}{Ju Fan},
+  \bibinfo{person}{Fangyi Li}, \bibinfo{person}{Jianhong Tu},
+  \bibinfo{person}{Xiaoyong Du}, \bibinfo{person}{Guoliang Li},
+  \bibinfo{person}{Sam Madden}, {and} \bibinfo{person}{Mourad Ouzzani}.}
+  \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{RPT: Relational Pre-Trained Transformer is Almost
+  All You Need towards Democratizing Data Preparation}.
+\newblock \bibinfo{journal}{\emph{Proc. VLDB Endow.}} \bibinfo{volume}{14},
+  \bibinfo{number}{8} (\bibinfo{date}{apr} \bibinfo{year}{2021}),
+  \bibinfo{pages}{1254–1261}.
+\newblock
+\showISSN{2150-8097}
+\urldef\tempurl%
+\url{https://doi.org/10.14778/3457390.3457391}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Tenney, Das, and Pavlick}{Tenney
+  et~al\mbox{.}}{2019a}]%
+        {Tenney:2019:BertRediscovers}
+\bibfield{author}{\bibinfo{person}{Ian Tenney}, \bibinfo{person}{Dipanjan Das},
+  {and} \bibinfo{person}{Ellie Pavlick}.} \bibinfo{year}{2019}\natexlab{a}.
+\newblock \showarticletitle{{BERT} Rediscovers the Classical {NLP} Pipeline}.
+  In \bibinfo{booktitle}{\emph{ACL}}. \bibinfo{pages}{4593--4601}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Tenney, Das, and Pavlick}{Tenney
+  et~al\mbox{.}}{2019b}]%
+        {tenney-etal-2019-bert-rediscovers}
+\bibfield{author}{\bibinfo{person}{Ian Tenney}, \bibinfo{person}{Dipanjan Das},
+  {and} \bibinfo{person}{Ellie Pavlick}.} \bibinfo{year}{2019}\natexlab{b}.
+\newblock \showarticletitle{{BERT} Rediscovers the Classical {NLP} Pipeline}.
+  In \bibinfo{booktitle}{\emph{Proceedings of the 57th Annual Meeting of the
+  Association for Computational Linguistics}}. \bibinfo{publisher}{Association
+  for Computational Linguistics}, \bibinfo{address}{Florence, Italy},
+  \bibinfo{pages}{4593--4601}.
+\newblock
+\urldef\tempurl%
+\url{https://doi.org/10.18653/v1/P19-1452}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Trabelsi, Cao, and Heflin}{Trabelsi
+  et~al\mbox{.}}{2020}]%
+        {Trabelsi:2020:SeLaB}
+\bibfield{author}{\bibinfo{person}{Mohamed Trabelsi}, \bibinfo{person}{Jin
+  Cao}, {and} \bibinfo{person}{Jeff Heflin}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \bibinfo{title}{Semantic Labeling Using a Deep Contextualized
+  Language Model}.
+\newblock
+\newblock
+\showeprint[arxiv]{2010.16037}~[cs.LG]
+
+
+\bibitem[\protect\citeauthoryear{Vaswani, Shazeer, Parmar, Uszkoreit, Jones,
+  Gomez, Kaiser, and Polosukhin}{Vaswani et~al\mbox{.}}{2017}]%
+        {vaswani2017attention}
+\bibfield{author}{\bibinfo{person}{Ashish Vaswani}, \bibinfo{person}{Noam
+  Shazeer}, \bibinfo{person}{Niki Parmar}, \bibinfo{person}{Jakob Uszkoreit},
+  \bibinfo{person}{Llion Jones}, \bibinfo{person}{Aidan~N Gomez},
+  \bibinfo{person}{{\L}ukasz Kaiser}, {and} \bibinfo{person}{Illia
+  Polosukhin}.} \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{Attention is all you need}. In
+  \bibinfo{booktitle}{\emph{Proc. NIPS '17}}. \bibinfo{pages}{5998--6008}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Venetis, Halevy, Madhavan, Pa\c{s}ca, Shen,
+  Wu, Miao, and Wu}{Venetis et~al\mbox{.}}{2011}]%
+        {Venetis:2011:VLDB:RecoveringSemantics}
+\bibfield{author}{\bibinfo{person}{Petros Venetis}, \bibinfo{person}{Alon
+  Halevy}, \bibinfo{person}{Jayant Madhavan}, \bibinfo{person}{Marius
+  Pa\c{s}ca}, \bibinfo{person}{Warren Shen}, \bibinfo{person}{Fei Wu},
+  \bibinfo{person}{Gengxin Miao}, {and} \bibinfo{person}{Chung Wu}.}
+  \bibinfo{year}{2011}\natexlab{}.
+\newblock \showarticletitle{Recovering Semantics of Tables on the Web}.
+\newblock \bibinfo{journal}{\emph{Proc. VLDB Endow.}} \bibinfo{volume}{4},
+  \bibinfo{number}{9} (\bibinfo{date}{June} \bibinfo{year}{2011}),
+  \bibinfo{pages}{528–538}.
+\newblock
+\showISSN{2150-8097}
+\urldef\tempurl%
+\url{https://doi.org/10.14778/2002938.2002939}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Wallace, Wang, Li, Singh, and Gardner}{Wallace
+  et~al\mbox{.}}{2019}]%
+        {wallace2019nlp}
+\bibfield{author}{\bibinfo{person}{Eric Wallace}, \bibinfo{person}{Yizhong
+  Wang}, \bibinfo{person}{Sujian Li}, \bibinfo{person}{Sameer Singh}, {and}
+  \bibinfo{person}{Matt Gardner}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{Do {NLP} Models Know Numbers? Probing Numeracy in
+  Embeddings}. In \bibinfo{booktitle}{\emph{Proceedings of the 2019 Conference
+  on Empirical Methods in Natural Language Processing and the 9th International
+  Joint Conference on Natural Language Processing (EMNLP-IJCNLP)}}.
+  \bibinfo{publisher}{Association for Computational Linguistics},
+  \bibinfo{address}{Hong Kong, China}, \bibinfo{pages}{5307--5315}.
+\newblock
+\urldef\tempurl%
+\url{https://doi.org/10.18653/v1/D19-1534}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Wang, Singh, Michael, Hill, Levy, and
+  Bowman}{Wang et~al\mbox{.}}{2019}]%
+        {WangSMHLB19}
+\bibfield{author}{\bibinfo{person}{Alex Wang}, \bibinfo{person}{Amanpreet
+  Singh}, \bibinfo{person}{Julian Michael}, \bibinfo{person}{Felix Hill},
+  \bibinfo{person}{Omer Levy}, {and} \bibinfo{person}{Samuel~R. Bowman}.}
+  \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{{GLUE:} {A} Multi-Task Benchmark and Analysis
+  Platform for Natural Language Understanding}. In
+  \bibinfo{booktitle}{\emph{{ICLR}}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Wang, Shiralkar, Lockard, Huang, Dong, and
+  Jiang}{Wang et~al\mbox{.}}{2021b}]%
+        {Wang:2021:TCN}
+\bibfield{author}{\bibinfo{person}{Daheng Wang}, \bibinfo{person}{Prashant
+  Shiralkar}, \bibinfo{person}{Colin Lockard}, \bibinfo{person}{Binxuan Huang},
+  \bibinfo{person}{Xin~Luna Dong}, {and} \bibinfo{person}{Meng Jiang}.}
+  \bibinfo{year}{2021}\natexlab{b}.
+\newblock \showarticletitle{TCN: Table Convolutional Network for Web Table
+  Interpretation}. In \bibinfo{booktitle}{\emph{Proceedings of the Web
+  Conference 2021}} (Ljubljana, Slovenia) \emph{(\bibinfo{series}{WWW '21})}.
+  \bibinfo{publisher}{Association for Computing Machinery},
+  \bibinfo{address}{New York, NY, USA}, \bibinfo{pages}{4020–4032}.
+\newblock
+\showISBNx{9781450383127}
+\urldef\tempurl%
+\url{https://doi.org/10.1145/3442381.3450090}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Wang, Dong, Jia, Li, Fu, Han, and Zhang}{Wang
+  et~al\mbox{.}}{2021a}]%
+        {Wang2:020:StructureAwarePretraining4Table}
+\bibfield{author}{\bibinfo{person}{Zhiruo Wang}, \bibinfo{person}{Haoyu Dong},
+  \bibinfo{person}{Ran Jia}, \bibinfo{person}{Jia Li}, \bibinfo{person}{Zhiyi
+  Fu}, \bibinfo{person}{Shi Han}, {and} \bibinfo{person}{Dongmei Zhang}.}
+  \bibinfo{year}{2021}\natexlab{a}.
+\newblock \showarticletitle{TUTA: Tree-Based Transformers for Generally
+  Structured Table Pre-Training}. In \bibinfo{booktitle}{\emph{Proceedings of
+  the 27th ACM SIGKDD Conference on Knowledge Discovery \& Data Mining}}
+  (Virtual Event, Singapore) \emph{(\bibinfo{series}{KDD '21})}.
+  \bibinfo{publisher}{Association for Computing Machinery},
+  \bibinfo{address}{New York, NY, USA}, \bibinfo{pages}{1780–1790}.
+\newblock
+\showISBNx{9781450383325}
+\urldef\tempurl%
+\url{https://doi.org/10.1145/3447548.3467434}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Wolf, Debut, Sanh, Chaumond, Delangue, Moi,
+  Cistac, Rault, Louf, Funtowicz, Davison, Shleifer, von Platen, Ma, Jernite,
+  Plu, Xu, Scao, Gugger, Drame, Lhoest, and Rush}{Wolf et~al\mbox{.}}{2020}]%
+        {Wolf-etal:2020:Transformers}
+\bibfield{author}{\bibinfo{person}{Thomas Wolf}, \bibinfo{person}{Lysandre
+  Debut}, \bibinfo{person}{Victor Sanh}, \bibinfo{person}{Julien Chaumond},
+  \bibinfo{person}{Clement Delangue}, \bibinfo{person}{Anthony Moi},
+  \bibinfo{person}{Pierric Cistac}, \bibinfo{person}{Tim Rault},
+  \bibinfo{person}{Rémi Louf}, \bibinfo{person}{Morgan Funtowicz},
+  \bibinfo{person}{Joe Davison}, \bibinfo{person}{Sam Shleifer},
+  \bibinfo{person}{Patrick von Platen}, \bibinfo{person}{Clara Ma},
+  \bibinfo{person}{Yacine Jernite}, \bibinfo{person}{Julien Plu},
+  \bibinfo{person}{Canwen Xu}, \bibinfo{person}{Teven~Le Scao},
+  \bibinfo{person}{Sylvain Gugger}, \bibinfo{person}{Mariama Drame},
+  \bibinfo{person}{Quentin Lhoest}, {and} \bibinfo{person}{Alexander~M. Rush}.}
+  \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{Transformers: State-of-the-Art Natural Language
+  Processing}. In \bibinfo{booktitle}{\emph{Proceedings of the 2020 Conference
+  on Empirical Methods in Natural Language Processing: System Demonstrations}}.
+  \bibinfo{publisher}{Association for Computational Linguistics},
+  \bibinfo{address}{Online}, \bibinfo{pages}{38--45}.
+\newblock
+\urldef\tempurl%
+\url{https://www.aclweb.org/anthology/2020.emnlp-demos.6}
+\showURL{%
+\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Wu, Green, Ben, and O'Banion}{Wu
+  et~al\mbox{.}}{2020}]%
+        {wu2020deep}
+\bibfield{author}{\bibinfo{person}{Neo Wu}, \bibinfo{person}{Bradley Green},
+  \bibinfo{person}{Xue Ben}, {and} \bibinfo{person}{Shawn O'Banion}.}
+  \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{Deep transformer models for time series
+  forecasting: The influenza prevalence case}.
+\newblock \bibinfo{journal}{\emph{arXiv preprint arXiv:2001.08317}}
+  (\bibinfo{year}{2020}).
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Yang and Hospedales}{Yang and
+  Hospedales}{2017}]%
+        {Yang:2017:ICLR:MTLSoftParameterSharing}
+\bibfield{author}{\bibinfo{person}{Yongxin Yang} {and}
+  \bibinfo{person}{Timothy~M. Hospedales}.} \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{Trace Norm Regularised Deep Multi-Task Learning}.
+  In \bibinfo{booktitle}{\emph{ICLR '17 Workshop Track}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Yates, Banko, Broadhead, Cafarella, Etzioni,
+  and Soderland}{Yates et~al\mbox{.}}{2007}]%
+        {Yates:2007:NAACL:TextRunner}
+\bibfield{author}{\bibinfo{person}{Alexander Yates}, \bibinfo{person}{Michele
+  Banko}, \bibinfo{person}{Matthew Broadhead}, \bibinfo{person}{Michael
+  Cafarella}, \bibinfo{person}{Oren Etzioni}, {and} \bibinfo{person}{Stephen
+  Soderland}.} \bibinfo{year}{2007}\natexlab{}.
+\newblock \showarticletitle{{T}ext{R}unner: Open Information Extraction on the
+  Web}. In \bibinfo{booktitle}{\emph{Proceedings of Human Language
+  Technologies: The Annual Conference of the North {A}merican Chapter of the
+  Association for Computational Linguistics ({NAACL}-{HLT})}}.
+  \bibinfo{publisher}{Association for Computational Linguistics},
+  \bibinfo{address}{Rochester, New York, USA}, \bibinfo{pages}{25--26}.
+\newblock
+\urldef\tempurl%
+\url{https://www.aclweb.org/anthology/N07-4013}
+\showURL{%
+\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Yin, Neubig, Yih, and Riedel}{Yin
+  et~al\mbox{.}}{2020}]%
+        {yin2020tabert}
+\bibfield{author}{\bibinfo{person}{Pengcheng Yin}, \bibinfo{person}{Graham
+  Neubig}, \bibinfo{person}{Wen-tau Yih}, {and} \bibinfo{person}{Sebastian
+  Riedel}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{{T}a{BERT}: Pretraining for Joint Understanding of
+  Textual and Tabular Data}. In \bibinfo{booktitle}{\emph{Proceedings of the
+  58th Annual Meeting of the Association for Computational Linguistics}}.
+  \bibinfo{publisher}{Association for Computational Linguistics},
+  \bibinfo{address}{Online}, \bibinfo{pages}{8413--8426}.
+\newblock
+\urldef\tempurl%
+\url{https://doi.org/10.18653/v1/2020.acl-main.745}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Zamir, Sax, Shen, Guibas, Malik, and
+  Savarese}{Zamir et~al\mbox{.}}{2018}]%
+        {Taskonomy2018}
+\bibfield{author}{\bibinfo{person}{Amir~R. Zamir}, \bibinfo{person}{Alexander
+  Sax}, \bibinfo{person}{William~B. Shen}, \bibinfo{person}{Leonidas~J.
+  Guibas}, \bibinfo{person}{Jitendra Malik}, {and} \bibinfo{person}{Silvio
+  Savarese}.} \bibinfo{year}{2018}\natexlab{}.
+\newblock \showarticletitle{Taskonomy: Disentangling Task Transfer Learning}.
+  In \bibinfo{booktitle}{\emph{IEEE Conference on Computer Vision and Pattern
+  Recognition (CVPR)}}. IEEE.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Zhai}{Zhai}{2008}]%
+        {Zhai:2008:LM4IR}
+\bibfield{author}{\bibinfo{person}{ChengXiang Zhai}.}
+  \bibinfo{year}{2008}\natexlab{}.
+\newblock \showarticletitle{Statistical Language Models for Information
+  Retrieval: {A} Critical Review}.
+\newblock \bibinfo{journal}{\emph{Found. Trends Inf. Retr.}}
+  \bibinfo{volume}{2}, \bibinfo{number}{3} (\bibinfo{year}{2008}),
+  \bibinfo{pages}{137--213}.
+\newblock
+\urldef\tempurl%
+\url{https://doi.org/10.1561/1500000008}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Zhang, Suhara, Li, Hulsebos, Demiralp, and
+  Tan}{Zhang et~al\mbox{.}}{2020}]%
+        {Zhang:2020:Sato}
+\bibfield{author}{\bibinfo{person}{Dan Zhang}, \bibinfo{person}{Yoshihiko
+  Suhara}, \bibinfo{person}{Jinfeng Li}, \bibinfo{person}{Madelon Hulsebos},
+  \bibinfo{person}{\c{C}a\u{g}atay Demiralp}, {and} \bibinfo{person}{Wang-Chiew
+  Tan}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{Sato: Contextual Semantic Type Detection in
+  Tables}.
+\newblock \bibinfo{journal}{\emph{Proc. VLDB Endow.}} \bibinfo{volume}{13},
+  \bibinfo{number}{12} (\bibinfo{date}{July} \bibinfo{year}{2020}),
+  \bibinfo{pages}{1835–1848}.
+\newblock
+\showISSN{2150-8097}
+\urldef\tempurl%
+\url{https://doi.org/10.14778/3407790.3407793}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Zhang, Hadjieleftheriou, Ooi, Procopiuc, and
+  Srivastava}{Zhang et~al\mbox{.}}{2011}]%
+        {zhang2011automatic}
+\bibfield{author}{\bibinfo{person}{Meihui Zhang}, \bibinfo{person}{Marios
+  Hadjieleftheriou}, \bibinfo{person}{Beng~Chin Ooi},
+  \bibinfo{person}{Cecilia~M Procopiuc}, {and} \bibinfo{person}{Divesh
+  Srivastava}.} \bibinfo{year}{2011}\natexlab{}.
+\newblock \showarticletitle{Automatic discovery of attributes in relational
+  databases}. In \bibinfo{booktitle}{\emph{Proceedings of the 2011 ACM SIGMOD
+  International Conference on Management of data}}. \bibinfo{pages}{109--120}.
+\newblock
+
+
+\end{thebibliography}

@@ -1,0 +1,1081 @@
+@misc{suhara2021annotating,
+      title={Annotating Columns with Pre-trained Language Models}, 
+      author={Yoshihiko Suhara and Jinfeng Li and Yuliang Li and Dan Zhang and Çağatay Demiralp and Chen Chen and Wang-Chiew Tan},
+      year={2021},
+      eprint={2104.01785},
+      archivePrefix={arXiv},
+      primaryClass={cs.DB}
+}
+
+@misc{Tableau,
+    author = "Tableau Software",
+    title="Tableau",
+    url="https://www.tableau.com/",
+}
+    
+@misc{GoogleDataStudio,
+    author = "Google",
+    title="Google Data Studio",
+    url = "https://datastudio.google.com/"
+}
+
+@inproceedings{geva2020injecting,
+    title = "Injecting Numerical Reasoning Skills into Language Models",
+    author = "Geva, Mor  and
+      Gupta, Ankit  and
+      Berant, Jonathan",
+    booktitle = "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics",
+    month = jul,
+    year = "2020",
+    address = "Online",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2020.acl-main.89",
+    doi = "10.18653/v1/2020.acl-main.89",
+    pages = "946--958",
+    abstract = "Large pre-trained language models (LMs) are known to encode substantial amounts of linguistic information. However, high-level reasoning skills, such as numerical reasoning, are difficult to learn from a language-modeling objective only. Consequently, existing models for numerical reasoning have used specialized architectures with limited flexibility. In this work, we show that numerical reasoning is amenable to automatic data generation, and thus one can inject this skill into pre-trained LMs, by generating large amounts of data, and training in a multi-task setup. We show that pre-training our model, GenBERT, on this data, dramatically improves performance on DROP (49.3 {--}{\textgreater} 72.3 F1), reaching performance that matches state-of-the-art models of comparable size, while using a simple and general-purpose encoder-decoder architecture. Moreover, GenBERT generalizes well to math word problem datasets, while maintaining high performance on standard RC tasks. Our approach provides a general recipe for injecting skills into large pre-trained LMs, whenever the skill is amenable to automatic data augmentation.",
+}
+
+@article{lin2020birds,
+  title={Birds have four legs?! numersense: Probing numerical commonsense knowledge of pre-trained language models},
+  author={Lin, Bill Yuchen and Lee, Seyeon and Khanna, Rahul and Ren, Xiang},
+  journal={arXiv preprint arXiv:2005.00683},
+  year={2020}
+}
+
+@inproceedings{wallace2019nlp,
+    title = "Do {NLP} Models Know Numbers? Probing Numeracy in Embeddings",
+    author = "Wallace, Eric  and
+      Wang, Yizhong  and
+      Li, Sujian  and
+      Singh, Sameer  and
+      Gardner, Matt",
+    booktitle = "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)",
+    month = nov,
+    year = "2019",
+    address = "Hong Kong, China",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/D19-1534",
+    doi = "10.18653/v1/D19-1534",
+    pages = "5307--5315",
+    abstract = "The ability to understand and work with numbers (numeracy) is critical for many complex reasoning tasks. Currently, most NLP models treat numbers in text in the same way as other tokens{---}they embed them as distributed vectors. Is this enough to capture numeracy? We begin by investigating the numerical reasoning capabilities of a state-of-the-art question answering model on the DROP dataset. We find this model excels on questions that require numerical reasoning, i.e., it already captures numeracy. To understand how this capability emerges, we probe token embedding methods (e.g., BERT, GloVe) on synthetic list maximum, number decoding, and addition tasks. A surprising degree of numeracy is naturally present in standard embeddings. For example, GloVe and word2vec accurately encode magnitude for numbers up to 1,000. Furthermore, character-level embeddings are even more precise{---}ELMo captures numeracy the best for all pre-trained methods{---}but BERT, which uses sub-word units, is less exact.",
+}
+
+
+@inproceedings{bollacker2008freebase,
+  title={Freebase: a collaboratively created graph database for structuring human knowledge},
+  author={Bollacker, Kurt and Evans, Colin and Paritosh, Praveen and Sturge, Tim and Taylor, Jamie},
+  booktitle={SIGMOD},
+  pages={1247--1250},
+  year={2008}
+}
+
+@article{wu2020deep,
+  title={Deep transformer models for time series forecasting: The influenza prevalence case},
+  author={Wu, Neo and Green, Bradley and Ben, Xue and O'Banion, Shawn},
+  journal={arXiv preprint arXiv:2001.08317},
+  year={2020}
+}
+
+@inproceedings{Deng:2018:CIDR,
+  author    = {Dong Deng and
+               Raul Castro Fernandez and
+               Ziawasch Abedjan and
+               Sibo Wang and
+               Michael Stonebraker and
+               Ahmed K. Elmagarmid and
+               Ihab F. Ilyas and
+               Samuel Madden and
+               Mourad Ouzzani and
+               Nan Tang},
+  title     = {The Data Civilizer System},
+  booktitle = {8th Biennial Conference on Innovative Data Systems Research, {CIDR}
+               2017, Chaminade, CA, USA, January 8-11, 2017, Online Proceedings},
+  publisher = {www.cidrdb.org},
+  year      = {2017},
+  url       = {http://cidrdb.org/cidr2017/papers/p44-deng-cidr17.pdf},
+}
+
+@article{Miller:2018:VLDB:OpenDataIntegration,
+author = {Miller, Ren\'{e}e J.},
+title = {Open Data Integration},
+year = {2018},
+issue_date = {August 2018},
+publisher = {VLDB Endowment},
+volume = {11},
+number = {12},
+issn = {2150-8097},
+url = {https://doi.org/10.14778/3229863.3240491},
+doi = {10.14778/3229863.3240491},
+abstract = {Open data plays a major role in supporting both governmental and organizational transparency. Many organizations are adopting Open Data Principles promising to make their open data complete, primary, and timely. These properties make this data tremendously valuable to data scientists. However, scientists generally do not have a priori knowledge about what data is available (its schema or content). Nevertheless, they want to be able to use open data and integrate it with other public or private data they are studying. Traditionally, data integration is done using a framework called query discovery where the main task is to discover a query (or transformation) that translates data from one form into another. The goal is to find the right operators to join, nest, group, link, and twist data into a desired form. We introduce a new paradigm for thinking about integration where the focus is on data discovery, but highly efficient internet-scale discovery that is driven by data analysis needs. We describe a research agenda and recent progress in developing scalable data-analysis or query-aware data discovery algorithms that provide high recall and accuracy over massive data repositories.},
+journal = {Proc. VLDB Endow.},
+month = aug,
+pages = {2130–2139},
+numpages = {10}
+}
+
+@article{Ota:2020:D4:VLDB,
+author = {Ota, Masayo and M\"{u}ller, Heiko and Freire, Juliana and Srivastava, Divesh},
+title = {Data-Driven Domain Discovery for Structured Datasets},
+year = {2020},
+issue_date = {March 2020},
+publisher = {VLDB Endowment},
+volume = {13},
+number = {7},
+issn = {2150-8097},
+url = {https://doi.org/10.14778/3384345.3384346},
+doi = {10.14778/3384345.3384346},
+abstract = {The growing number of open datasets has created new opportunities to derive insights and address important societal problems. These data, however, often come with little or no metadata, in particular about the types of their attributes, thus greatly limiting their utility. In this paper, we address the problem of domain discovery: given a collection of tables, we aim to identify sets of terms that represent instances of a semantic concept or domain. Knowledge of attribute domains not only enables a richer set of queries over dataset collections, but it can also help in data integration. We propose a data-driven approach that leverages value co-occurrence information across a large number of dataset columns to derive robust context signatures and infer domains. We discuss the results of a detailed experimental evaluation, using real urban dataset collections, which show that our approach is robust and outperforms state-of-the-art methods in the presence of incomplete columns, heterogeneous or erroneous data, and scales to datasets with several million distinct terms.},
+journal = {Proc. VLDB Endow.},
+month = mar,
+pages = {953–967},
+numpages = {15}
+}
+ 
+@inproceedings{tenney-etal-2019-bert-rediscovers,
+    title = "{BERT} Rediscovers the Classical {NLP} Pipeline",
+    author = "Tenney, Ian  and
+      Das, Dipanjan  and
+      Pavlick, Ellie",
+    booktitle = "Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics",
+    month = jul,
+    year = "2019",
+    address = "Florence, Italy",
+    publisher = "Association for Computational Linguistics",
+    url = "https://www.aclweb.org/anthology/P19-1452",
+    doi = "10.18653/v1/P19-1452",
+    pages = "4593--4601",
+    abstract = "Pre-trained text encoders have rapidly advanced the state of the art on many NLP tasks. We focus on one such model, BERT, and aim to quantify where linguistic information is captured within the network. We find that the model represents the steps of the traditional NLP pipeline in an interpretable and localizable way, and that the regions responsible for each step appear in the expected sequence: POS tagging, parsing, NER, semantic roles, then coreference. Qualitative analysis reveals that the model can and often does adjust this pipeline dynamically, revising lower-level decisions on the basis of disambiguating information from higher-level representations.",
+}
+
+@inproceedings{arase-tsujii-2019-transfer,
+    title = "Transfer Fine-Tuning: A {BERT} Case Study",
+    author = "Arase, Yuki  and
+      Tsujii, Jun{'}ichi",
+    booktitle = "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)",
+    month = nov,
+    year = "2019",
+    address = "Hong Kong, China",
+    publisher = "Association for Computational Linguistics",
+    url = "https://www.aclweb.org/anthology/D19-1542",
+    doi = "10.18653/v1/D19-1542",
+    pages = "5393--5404",
+    abstract = "A semantic equivalence assessment is defined as a task that assesses semantic equivalence in a sentence pair by binary judgment (i.e., paraphrase identification) or grading (i.e., semantic textual similarity measurement). It constitutes a set of tasks crucial for research on natural language understanding. Recently, BERT realized a breakthrough in sentence representation learning (Devlin et al., 2019), which is broadly transferable to various NLP tasks. While BERT{'}s performance improves by increasing its model size, the required computational power is an obstacle preventing practical applications from adopting the technology. Herein, we propose to inject phrasal paraphrase relations into BERT in order to generate suitable representations for semantic equivalence assessment instead of increasing the model size. Experiments on standard natural language understanding tasks confirm that our method effectively improves a smaller BERT model while maintaining the model size. The generated model exhibits superior performance compared to a larger BERT model on semantic equivalence assessment tasks. Furthermore, it achieves larger performance gains on tasks with limited training datasets for fine-tuning, which is a property desirable for transfer learning.",
+}
+
+@inproceedings{liu-etal-2019-linguistic-transferability,
+    title = "Linguistic Knowledge and Transferability of Contextual Representations",
+    author = "Liu, Nelson F.  and
+      Gardner, Matt  and
+      Belinkov, Yonatan  and
+      Peters, Matthew E.  and
+      Smith, Noah A.",
+    booktitle = "Proceedings of the 2019 Conference of the North {A}merican Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 1 (Long and Short Papers)",
+    month = jun,
+    year = "2019",
+    address = "Minneapolis, Minnesota",
+    publisher = "Association for Computational Linguistics",
+    url = "https://www.aclweb.org/anthology/N19-1112",
+    doi = "10.18653/v1/N19-1112",
+    pages = "1073--1094",
+    abstract = "Contextual word representations derived from large-scale neural language models are successful across a diverse set of NLP tasks, suggesting that they encode useful and transferable features of language. To shed light on the linguistic knowledge they capture, we study the representations produced by several recent pretrained contextualizers (variants of ELMo, the OpenAI transformer language model, and BERT) with a suite of sixteen diverse probing tasks. We find that linear models trained on top of frozen contextual representations are competitive with state-of-the-art task-specific models in many cases, but fail on tasks requiring fine-grained linguistic knowledge (e.g., conjunct identification). To investigate the transferability of contextual word representations, we quantify differences in the transferability of individual layers within contextualizers, especially between recurrent neural networks (RNNs) and transformers. For instance, higher layers of RNNs are more task-specific, while transformer layers do not exhibit the same monotonic trend. In addition, to better understand what makes contextual word representations transferable, we compare language model pretraining with eleven supervised pretraining tasks. For any given task, pretraining on a closely related task yields better performance than language model pretraining (which is better on average) when the pretraining dataset is fixed. However, language model pretraining on more data gives the best results.",
+}
+
+@inproceedings{Taskonomy2018,
+title={Taskonomy: Disentangling Task Transfer Learning},
+author={Amir R. Zamir and Alexander Sax and William B. Shen and Leonidas J. Guibas and Jitendra Malik and Silvio Savarese},
+booktitle={IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+year={2018},
+organization={IEEE},
+}
+
+@article{Mahdavi:2020:Baran,
+  title={{Baran}: Effective error correction via a unified context representation and transfer learning},
+  author={Mahdavi, Mohammad and Abedjan, Ziawasch},
+  journal={Proceedings of the VLDB Endowment (PVLDB)},
+  volume={13},
+  number={11},
+  pages={1948--1961},
+  year={2020},
+  publisher={VLDB Endowment}
+}
+
+@inproceedings{Mahdavi:2019:Raha,
+  title={{Raha}: A configuration-free error detection system},
+  author={Mahdavi, Mohammad and Abedjan, Ziawasch and Castro Fernandez, Raul and Madden, Samuel and Ouzzani, Mourad and Stonebraker, Michael and Tang, Nan},
+  booktitle={Proceedings of the International Conference on Management of Data (SIGMOD)},
+  pages={865--882},
+  year={2019},
+  organization={ACM}
+}
+
+@article{Li:2021:JDIQ:DeepEntityMatching,
+author = {Li, Yuliang and Li, Jinfeng and Suhara, Yoshihiko and Wang, Jin and Hirota, Wataru and Tan, Wang-Chiew},
+title = {Deep Entity Matching: Challenges and Opportunities},
+year = {2021},
+issue_date = {January 2021},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {13},
+number = {1},
+issn = {1936-1955},
+url = {https://doi.org/10.1145/3431816},
+doi = {10.1145/3431816},
+abstract = {Entity matching refers to the task of determining whether two different representations refer to the same real-world entity. It continues to be a prevalent problem for many organizations where data resides in different sources and duplicates the need to be identified and managed. The term “entity matching” also loosely refers to the broader problem of determining whether two heterogeneous representations of different entities should be associated together. This problem has an even wider scope of applications, from determining the subsidiaries of companies to matching jobs to job seekers, which has impactful consequences.In this article, we first report our recent system DITTO, which is an example of a modern entity matching system based on pretrained language models. Then we summarize recent solutions in applying deep learning and pre-trained language models for solving the entity matching task. Finally, we discuss research directions beyond entity matching, including the promise of synergistically integrating blocking and entity matching steps together, the need to examine methods to alleviate steep training data requirements that are typical of deep learning or pre-trained language models, and the importance of generalizing entity matching solutions to handle the broader entity matching problem, which leads to an even more pressing need to explain matching outcomes.},
+journal = {J. Data and Information Quality},
+month = jan,
+articleno = {1},
+numpages = {17},
+keywords = {entity resolution, Entity matching, pre-trained language models, deep learning, data integration}
+}
+
+@inproceedings{mikolov2013word2vec,
+  author    = {Tom{\'{a}}s Mikolov and
+               Kai Chen and
+               Greg Corrado and
+               Jeffrey Dean},
+  editor    = {Yoshua Bengio and
+               Yann LeCun},
+  title     = {Efficient Estimation of Word Representations in Vector Space},
+  booktitle = {1st International Conference on Learning Representations, {ICLR} 2013,
+               Scottsdale, Arizona, USA, May 2-4, 2013, Workshop Track Proceedings},
+  year      = {2013},
+  url       = {http://arxiv.org/abs/1301.3781},
+  timestamp = {Mon, 28 Dec 2020 11:31:01 +0100},
+  biburl    = {https://dblp.org/rec/journals/corr/abs-1301-3781.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@article{bojanowski2016enriching,
+    title = "Enriching Word Vectors with Subword Information",
+    author = "Bojanowski, Piotr  and
+      Grave, Edouard  and
+      Joulin, Armand  and
+      Mikolov, Tomas",
+    journal = "Transactions of the Association for Computational Linguistics",
+    volume = "5",
+    year = "2017",
+    url = "https://www.aclweb.org/anthology/Q17-1010",
+    doi = "10.1162/tacl_a_00051",
+    pages = "135--146",
+    abstract = "Continuous word representations, trained on large unlabeled corpora are useful for many natural language processing tasks. Popular models that learn such representations ignore the morphology of words, by assigning a distinct vector to each word. This is a limitation, especially for languages with large vocabularies and many rare words. In this paper, we propose a new approach based on the skipgram model, where each word is represented as a bag of character n-grams. A vector representation is associated to each character n-gram; words being represented as the sum of these representations. Our method is fast, allowing to train models on large corpora quickly and allows us to compute word representations for words that did not appear in the training data. We evaluate our word representations on nine different languages, both on word similarity and analogy tasks. By comparing to recently proposed morphological word representations, we show that our vectors achieve state-of-the-art performance on these tasks.",
+}
+
+@inproceedings{pennington-etal-2014-glove,
+    title = "{G}lo{V}e: Global Vectors for Word Representation",
+    author = "Pennington, Jeffrey  and
+      Socher, Richard  and
+      Manning, Christopher",
+    booktitle = "Proceedings of the 2014 Conference on Empirical Methods in Natural Language Processing ({EMNLP})",
+    month = oct,
+    year = "2014",
+    address = "Doha, Qatar",
+    publisher = "Association for Computational Linguistics",
+    url = "https://www.aclweb.org/anthology/D14-1162",
+    doi = "10.3115/v1/D14-1162",
+    pages = "1532--1543",
+}
+
+@inproceedings{Wolf-etal:2020:Transformers,
+    title = "Transformers: State-of-the-Art Natural Language Processing",
+    author = "Thomas Wolf and Lysandre Debut and Victor Sanh and Julien Chaumond and Clement Delangue and Anthony Moi and Pierric Cistac and Tim Rault and Rémi Louf and Morgan Funtowicz and Joe Davison and Sam Shleifer and Patrick von Platen and Clara Ma and Yacine Jernite and Julien Plu and Canwen Xu and Teven Le Scao and Sylvain Gugger and Mariama Drame and Quentin Lhoest and Alexander M. Rush",
+    booktitle = "Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing: System Demonstrations",
+    month = oct,
+    year = "2020",
+    address = "Online",
+    publisher = "Association for Computational Linguistics",
+    url = "https://www.aclweb.org/anthology/2020.emnlp-demos.6",
+    pages = "38--45"
+}
+
+@incollection{PyTorch:NeurIPS2019,
+  title = {{PyTorch}: An Imperative Style, High-Performance Deep Learning Library},
+  author = {Paszke, Adam and Gross, Sam and Massa, Francisco and Lerer, Adam and Bradbury, James and Chanan, Gregory and Killeen, Trevor and Lin, Zeming and Gimelshein, Natalia and Antiga, Luca and Desmaison, Alban and Kopf, Andreas and Yang, Edward and DeVito, Zachary and Raison, Martin and Tejani, Alykhan and Chilamkurthy, Sasank and Steiner, Benoit and Fang, Lu and Bai, Junjie and Chintala, Soumith},
+  booktitle = {Advances in Neural Information Processing Systems 32},
+  editor = {H. Wallach and H. Larochelle and A. Beygelzimer and F. d\textquotesingle Alch\'{e}-Buc and E. Fox and R. Garnett},
+  pages = {8024--8035},
+  year = {2019},
+  publisher = {Curran Associates, Inc.},
+  url = {http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf}
+}
+
+
+@inproceedings{Hu:2019:CHI:VizNet,
+author = {Hu, Kevin and Gaikwad, Snehalkumar 'Neil' S. and Hulsebos, Madelon and Bakker, Michiel A. and Zgraggen, Emanuel and Hidalgo, C\'{e}sar and Kraska, Tim and Li, Guoliang and Satyanarayan, Arvind and Demiralp, \c{C}a\u{g}atay},
+title = {{VizNet}: Towards A Large-Scale Visualization Learning and Benchmarking Repository},
+year = {2019},
+isbn = {9781450359702},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3290605.3300892},
+doi = {10.1145/3290605.3300892},
+abstract = {Researchers currently rely on ad hoc datasets to train automated visualization tools and evaluate the effectiveness of visualization designs. These exemplars often lack the characteristics of real-world datasets, and their one-off nature makes it difficult to compare different techniques. In this paper, we present VizNet: a large-scale corpus of over 31 million datasets compiled from open data repositories and online visualization galleries. On average, these datasets comprise 17 records over 3 dimensions and across the corpus, we find 51% of the dimensions record categorical data, 44% quantitative, and only 5% temporal. VizNet provides the necessary common baseline for comparing visualization design techniques, and developing benchmark models and algorithms for automating visual analysis. To demonstrate VizNet's utility as a platform for conducting online crowdsourced experiments at scale, we replicate a prior study assessing the influence of user task and data distribution on visual encoding effectiveness, and extend it by considering an additional task: outlier detection. To contend with running such studies at scale, we demonstrate how a metric of perceptual effectiveness can be learned from experimental results, and show its predictive power across test datasets.},
+booktitle = {Proceedings of the 2019 CHI Conference on Human Factors in Computing Systems},
+pages = {1–12},
+numpages = {12},
+keywords = {benchmarking, crowd computing, machine learning, automated visualization, active learning, reproducible research},
+location = {Glasgow, Scotland Uk},
+series = {CHI '19}
+}
+
+@inproceedings{Caruana:1993:MTLHardParameterSharing,
+    author = {Caruana, Rich},
+    title = {Multitask Learning: A Knowledge-Based Source of Inductive Bias},
+    year = {1993},
+    isbn = {1558603077},
+    publisher = {Morgan Kaufmann Publishers Inc.},
+    address = {San Francisco, CA, USA},
+    booktitle = {Proceedings of the Tenth International Conference on International Conference on Machine Learning},
+    pages = {41–48},
+    numpages = {8},
+    location = {Amherst, MA, USA},
+    series = {ICML'93}
+}
+
+@inproceedings{Yang:2017:ICLR:MTLSoftParameterSharing, 
+      title={Trace Norm Regularised Deep Multi-Task Learning}, 
+      author={Yongxin Yang and Timothy M. Hospedales},
+      year={2017},
+      booktitle={ICLR '17 Workshop Track},
+}
+
+@inproceedings{Hashimoto:2017:EMNLP:JointMTL,
+    title = "A Joint Many-Task Model: Growing a Neural Network for Multiple {NLP} Tasks",
+    author = "Hashimoto, Kazuma  and
+      Xiong, Caiming  and
+      Tsuruoka, Yoshimasa  and
+      Socher, Richard",
+    booktitle = "Proceedings of the 2017 Conference on Empirical Methods in Natural Language Processing",
+    month = sep,
+    year = "2017",
+    address = "Copenhagen, Denmark",
+    publisher = "Association for Computational Linguistics",
+    url = "https://www.aclweb.org/anthology/D17-1206",
+    doi = "10.18653/v1/D17-1206",
+    pages = "1923--1933",
+    abstract = "Transfer and multi-task learning have traditionally focused on either a single source-target pair or very few, similar tasks. 
+    Ideally, the linguistic levels of morphology, syntax and semantics would benefit each other by being trained in a single model. We introduce a joint many-task model together with a strategy for successively growing its depth to solve increasingly complex tasks. Higher layers include shortcut connections to lower-level task predictions to reflect linguistic hierarchies. We use a simple regularization term to allow for optimizing all model weights to improve one task{'}s loss without exhibiting catastrophic interference of the other tasks. Our single end-to-end model obtains state-of-the-art or competitive results on five different tasks from tagging, parsing, relatedness, and entailment tasks.",
+}
+
+@inproceedings{vaswani2017attention,
+  title={Attention is all you need},
+  author={Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob and Jones, Llion and Gomez, Aidan N and Kaiser, {\L}ukasz and Polosukhin, Illia},
+  booktitle={Proc. NIPS '17},
+  pages={5998--6008},
+  year={2017}
+}
+
+
+@inproceedings{Roberts:2020:HowMuchKnowledge,
+    title = "How Much Knowledge Can You Pack Into the Parameters of a Language Model?",
+    author = "Roberts, Adam  and
+      Raffel, Colin  and
+      Shazeer, Noam",
+    booktitle = "Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP)",
+    month = nov,
+    year = "2020",
+    address = "Online",
+    publisher = "Association for Computational Linguistics",
+    url = "https://www.aclweb.org/anthology/2020.emnlp-main.437",
+    doi = "10.18653/v1/2020.emnlp-main.437",
+    pages = "5418--5426",
+    abstract = "It has recently been observed that neural language models trained on unstructured text can implicitly store and retrieve knowledge using natural language queries. In this short paper, we measure the practical utility of this approach by fine-tuning pre-trained models to answer questions without access to any external context or knowledge. We show that this approach scales with model size and performs competitively with open-domain systems that explicitly retrieve answers from an external knowledge source when answering questions. To facilitate reproducibility and future work, we release our code and trained models.",
+}
+
+@article{Jiang:2020:HowCanWeKnowLM,
+    title = "How Can We Know What Language Models Know?",
+    author = "Jiang, Zhengbao  and
+      Xu, Frank F.  and
+      Araki, Jun  and
+      Neubig, Graham",
+    journal = "Transactions of the Association for Computational Linguistics",
+    volume = "8",
+    year = "2020",
+    url = "https://www.aclweb.org/anthology/2020.tacl-1.28",
+    doi = "10.1162/tacl_a_00324",
+    pages = "423--438",
+    abstract = "Recent work has presented intriguing results examining the knowledge contained in language models (LMs) by having the LM fill in the blanks of prompts such as {``}Obama is a {\_}{\_} by profession{''}. These prompts are usually manually created, and quite possibly sub-optimal; another prompt such as {``}Obama worked as a {\_}{\_} {''} may result in more accurately predicting the correct profession. Because of this, given an inappropriate prompt, we might fail to retrieve facts that the LM does know, and thus any given prompt only provides a lower bound estimate of the knowledge contained in an LM. In this paper, we attempt to more accurately estimate the knowledge contained in LMs by automatically discovering better prompts to use in this querying process. Specifically, we propose mining-based and paraphrasing-based methods to automatically generate high-quality and diverse prompts, as well as ensemble methods to combine answers from different prompts. Extensive experiments on the LAMA benchmark for extracting relational knowledge from LMs demonstrate that our methods can improve accuracy from 31.1{\%} to 39.6{\%}, providing a tighter lower bound on what LMs know. We have released the code and the resulting LM Prompt And Query Archive (LPAQA) at https://github.com/jzbjyb/LPAQA.",
+}
+
+@inproceedings{Petroni:2019:LAMA,
+    title = "Language Models as Knowledge Bases?",
+    author = {Petroni, Fabio  and
+      Rockt{\"a}schel, Tim  and
+      Riedel, Sebastian  and
+      Lewis, Patrick  and
+      Bakhtin, Anton  and
+      Wu, Yuxiang  and
+      Miller, Alexander},
+    booktitle = "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)",
+    month = nov,
+    year = "2019",
+    address = "Hong Kong, China",
+    publisher = "Association for Computational Linguistics",
+    url = "https://www.aclweb.org/anthology/D19-1250",
+    doi = "10.18653/v1/D19-1250",
+    pages = "2463--2473",
+    abstract = "Recent progress in pretraining language models on large textual corpora led to a surge of improvements for downstream NLP tasks. Whilst learning linguistic knowledge, these models may also be storing relational knowledge present in the training data, and may be able to answer queries structured as {``}fill-in-the-blank{''} cloze statements. Language models have many advantages over structured knowledge bases: they require no schema engineering, allow practitioners to query about an open class of relations, are easy to extend to more data, and require no human supervision to train. We present an in-depth analysis of the relational knowledge already present (without fine-tuning) in a wide range of state-of-the-art pretrained language models. We find that (i) without fine-tuning, BERT contains relational knowledge competitive with traditional NLP methods that have some access to oracle knowledge, (ii) BERT also does remarkably well on open-domain question answering against a supervised baseline, and (iii) certain types of factual knowledge are learned much more readily than others by standard language model pretraining approaches. The surprisingly strong ability of these models to recall factual knowledge without any fine-tuning demonstrates their potential as unsupervised open-domain QA systems. The code to reproduce our analysis is available at https://github.com/facebookresearch/LAMA.",
+}
+
+@inproceedings{Wang:2021:TCN,
+author = {Wang, Daheng and Shiralkar, Prashant and Lockard, Colin and Huang, Binxuan and Dong, Xin Luna and Jiang, Meng},
+title = {TCN: Table Convolutional Network for Web Table Interpretation},
+year = {2021},
+isbn = {9781450383127},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3442381.3450090},
+doi = {10.1145/3442381.3450090},
+abstract = {Information extraction from semi-structured webpages provides valuable long-tailed facts for augmenting knowledge graph. Relational Web tables are a critical component containing additional entities and attributes of rich and diverse knowledge. However, extracting knowledge from relational tables is challenging because of sparse contextual information. Existing work linearize table cells and heavily rely on modifying deep language models such as BERT which only captures related cells information in the same table. In this work, we propose a novel relational table representation learning approach considering both the intra- and inter-table contextual information. On one hand, the proposed Table Convolutional Network model employs the attention mechanism to adaptively focus on the most informative intra-table cells of the same row or column; and, on the other hand, it aggregates inter-table contextual information from various types of implicit connections between cells across different tables. Specifically, we propose three novel aggregation modules for (i) cells of the same value, (ii) cells of the same schema position, and (iii) cells linked to the same page topic. We further devise a supervised multi-task training objective for jointly predicting column type and pairwise column relation, as well as a table cell recovery objective for pre-training. Experiments on real Web table datasets demonstrate our method can outperform competitive baselines by of F1 for column type prediction and by of F1 for pairwise column relation prediction. },
+booktitle = {Proceedings of the Web Conference 2021},
+pages = {4020–4032},
+numpages = {13},
+keywords = {information extraction, knowledge extraction, Web table},
+location = {Ljubljana, Slovenia},
+series = {WWW '21}
+}
+
+
+@inproceedings{Wang2:020:StructureAwarePretraining4Table,
+author = {Wang, Zhiruo and Dong, Haoyu and Jia, Ran and Li, Jia and Fu, Zhiyi and Han, Shi and Zhang, Dongmei},
+title = {TUTA: Tree-Based Transformers for Generally Structured Table Pre-Training},
+year = {2021},
+isbn = {9781450383325},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3447548.3467434},
+doi = {10.1145/3447548.3467434},
+abstract = {We propose TUTA, a unified pre-training architecture for understanding generally structured tables. Noticing that understanding a table requires spatial, hierarchical, and semantic information, we enhance transformers with three novel structure-aware mechanisms. First, we devise a unified tree-based structure, called a bi-dimensional coordinate tree, to describe both the spatial and hierarchical information of generally structured tables. Upon this, we propose tree-based attention and position embedding to better capture the spatial and hierarchical information. Moreover, we devise three progressive pre-training objectives to enable representations at the token, cell, and table levels. We pre-train TUTA on a wide range of unlabeled web and spreadsheet tables and fine-tune it on two critical tasks in the field of table structure understanding: cell type classification and table type classification. Experiments show that TUTA is highly effective, achieving state-of-the-art on five widely-studied datasets.},
+booktitle = {Proceedings of the 27th ACM SIGKDD Conference on Knowledge Discovery \& Data Mining},
+pages = {1780–1790},
+numpages = {11},
+keywords = {transformer, generally structured table, self supervision},
+location = {Virtual Event, Singapore},
+series = {KDD '21}
+}
+
+
+@misc{Ruder:2017:MTLOverview,
+      title={An Overview of Multi-Task Learning in Deep Neural Networks}, 
+      author={Sebastian Ruder},
+      year={2017},
+      eprint={1706.05098},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
+
+@article{Caruana:2004:MTL,
+  title={Multitask Learning},
+  author={R. Caruana},
+  journal={Machine Learning},
+  year={2004},
+  volume={28},
+  pages={41-75}
+}
+
+@article{Schelter:2018:DataQuality,
+  author    = {Sebastian Schelter and
+               Dustin Lange and
+               Philipp Schmidt and
+               Meltem Celikel and
+               Felix Bie{\ss}mann and
+               Andreas Grafberger},
+  title     = {Automating Large-Scale Data Quality Verification},
+  journal   = {Proc. {VLDB} Endow.},
+  volume    = {11},
+  number    = {12},
+  pages     = {1781--1794},
+  year      = {2018}
+}
+
+@article{Chapman:2020:DatasetSearch,
+  author    = {Adriane Chapman and
+               Elena Simperl and
+               Laura Koesten and
+               George Konstantinidis and
+               Luis{-}Daniel Ib{\'{a}}{\~{n}}ez and
+               Emilia Kacprzak and
+               Paul Groth},
+  title     = {Dataset search: a survey},
+  journal   = {{VLDB} J.},
+  volume    = {29},
+  number    = {1},
+  pages     = {251--272},
+  year      = {2020}
+}
+
+@article{Rahm:2001:SchemaMatching,
+  author    = {Erhard Rahm and
+               Philip A. Bernstein},
+  title     = {A survey of approaches to automatic schema matching},
+  journal   = {{VLDB} J.},
+  volume    = {10},
+  number    = {4},
+  pages     = {334--350},
+  year      = {2001}
+}
+
+@article{Zaheer:2021:BigBird,
+      title={{Big Bird}: Transformers for Longer Sequences}, 
+      author={Manzil Zaheer and Guru Guruganesh and Avinava Dubey and Joshua Ainslie and Chris Alberti and Santiago Ontanon and Philip Pham and Anirudh Ravula and Qifan Wang and Li Yang and Amr Ahmed},
+      year={2021},
+      journal={arXiv:2007.14062},
+}
+
+@article{Beltagy:2020:Longformer,
+  title={Longformer: The Long-Document Transformer},
+  author={Iz Beltagy and Matthew E. Peters and Arman Cohan},
+  journal={arXiv:2004.05150},
+  year={2020},
+}
+
+@article{Tay:2020:EfficientTransformersSurvey,
+      title={Efficient Transformers: A Survey}, 
+      author={Yi Tay and Mostafa Dehghani and Dara Bahri and Donald Metzler},
+      journal={arXiv:2009.06732},
+      year={2020},
+}
+
+@article{gpt2,
+  title={Language Models are Unsupervised Multitask Learners},
+  author={Radford, Alec and Wu, Jeff and Child, Rewon and Luan, David and Amodei, Dario and Sutskever, Ilya},
+  year={2019}
+}
+
+@inproceedings{Tenney:2019:BertRediscovers,
+    title = {{BERT} Rediscovers the Classical {NLP} Pipeline},
+    author = {Tenney, Ian  and
+      Das, Dipanjan  and
+      Pavlick, Ellie},
+    booktitle = {ACL},
+    year = {2019},
+    pages = {4593--4601},
+}
+
+@inproceedings{Clark:2019:WhatDoesBERTLookAt,
+    title = {What Does {BERT} Look at? An Analysis of {BERT}{'}s Attention},
+    author = {Clark, Kevin  and
+      Khandelwal, Urvashi  and
+      Levy, Omer  and
+      Manning, Christopher D.},
+    booktitle = {Proc. BlackBoxNLP '19},
+    year = {2019},
+    pages = {276--286},
+}
+
+@inproceedings{Yates:2007:NAACL:TextRunner,
+    title = "{T}ext{R}unner: Open Information Extraction on the Web",
+    author = "Yates, Alexander  and
+      Banko, Michele  and
+      Broadhead, Matthew  and
+      Cafarella, Michael  and
+      Etzioni, Oren  and
+      Soderland, Stephen",
+    booktitle = "Proceedings of Human Language Technologies: The Annual Conference of the North {A}merican Chapter of the Association for Computational Linguistics ({NAACL}-{HLT})",
+    month = apr,
+    year = "2007",
+    address = "Rochester, New York, USA",
+    publisher = "Association for Computational Linguistics",
+    url = "https://www.aclweb.org/anthology/N07-4013",
+    pages = "25--26",
+}
+
+@inproceedings{Nakashole:2012:PATTY,
+    title = "{PATTY}: A Taxonomy of Relational Patterns with Semantic Types",
+    author = "Nakashole, Ndapandula  and
+      Weikum, Gerhard  and
+      Suchanek, Fabian",
+    booktitle = "Proceedings of the 2012 Joint Conference on Empirical Methods in Natural Language Processing and Computational Natural Language Learning",
+    month = jul,
+    year = "2012",
+    address = "Jeju Island, Korea",
+    publisher = "Association for Computational Linguistics",
+    url = "https://www.aclweb.org/anthology/D12-1104",
+    pages = "1135--1145",
+}
+
+@article{Zhai:2008:LM4IR,
+  author    = {ChengXiang Zhai},
+  title     = {Statistical Language Models for Information Retrieval: {A} Critical
+               Review},
+  journal   = {Found. Trends Inf. Retr.},
+  volume    = {2},
+  number    = {3},
+  pages     = {137--213},
+  year      = {2008},
+  url       = {https://doi.org/10.1561/1500000008},
+  doi       = {10.1561/1500000008},
+  timestamp = {Thu, 12 Mar 2020 15:55:10 +0100},
+  biburl    = {https://dblp.org/rec/journals/ftir/Zhai08.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+
+@inproceedings{Brunner:2020:EDBT:BERT4EM,
+  author    = {Ursin Brunner and
+               Kurt Stockinger},
+  editor    = {Angela Bonifati and
+               Yongluan Zhou and
+               Marcos Antonio Vaz Salles and
+               Alexander B{\"{o}}hm and
+               Dan Olteanu and
+               George H. L. Fletcher and
+               Arijit Khan and
+               Bin Yang},
+  title     = {Entity Matching with Transformer Architectures - {A} Step Forward
+               in Data Integration},
+  booktitle = {Proceedings of the 23rd International Conference on Extending Database
+               Technology, {EDBT} 2020, Copenhagen, Denmark, March 30 - April 02,
+               2020},
+  pages     = {463--473},
+  publisher = {OpenProceedings.org},
+  year      = {2020},
+  url       = {https://doi.org/10.5441/002/edbt.2020.58},
+  doi       = {10.5441/002/edbt.2020.58},
+  timestamp = {Fri, 29 Jan 2021 22:08:50 +0100},
+  biburl    = {https://dblp.org/rec/conf/edbt/BrunnerS20.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+
+@article{Rogers:2020:TACL:BERTology,
+    title = "A Primer in {BERT}ology: What We Know About How {BERT} Works",
+    author = "Rogers, Anna  and
+      Kovaleva, Olga  and
+      Rumshisky, Anna",
+    journal = "Transactions of the Association for Computational Linguistics",
+    volume = "8",
+    year = "2020",
+    url = "https://www.aclweb.org/anthology/2020.tacl-1.54",
+    doi = "10.1162/tacl_a_00349",
+    pages = "842--866",
+    abstract = "Transformer-based models have pushed state of the art in many areas of NLP, but our understanding of what is behind their success is still limited. This paper is the first survey of over 150 studies of the popular BERT model. We review the current state of knowledge about how BERT works, what kind of information it learns and how it is represented, common modifications to its training objectives and architecture, the overparameterization issue, and approaches to compression. We then outline directions for future research.",
+}
+
+@inproceedings{Devlin:2019:BERT,
+    title = "{BERT}: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+    author = "Devlin, Jacob  and
+      Chang, Ming-Wei  and
+      Lee, Kenton  and
+      Toutanova, Kristina",
+    booktitle = "Proceedings of the 2019 Conference of the North {A}merican Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 1 (Long and Short Papers)",
+    month = jun,
+    year = "2019",
+    address = "Minneapolis, Minnesota",
+    publisher = "Association for Computational Linguistics",
+    url = "https://www.aclweb.org/anthology/N19-1423",
+    doi = "10.18653/v1/N19-1423",
+    pages = "4171--4186",
+    abstract = "We introduce a new language representation model called BERT, which stands for Bidirectional Encoder Representations from Transformers. Unlike recent language representation models (Peters et al., 2018a; Radford et al., 2018), BERT is designed to pre-train deep bidirectional representations from unlabeled text by jointly conditioning on both left and right context in all layers. As a result, the pre-trained BERT model can be fine-tuned with just one additional output layer to create state-of-the-art models for a wide range of tasks, such as question answering and language inference, without substantial task-specific architecture modifications. BERT is conceptually simple and empirically powerful. It obtains new state-of-the-art results on eleven natural language processing tasks, including pushing the GLUE score to 80.5 (7.7 point absolute improvement), MultiNLI accuracy to 86.7{\%} (4.6{\%} absolute improvement), SQuAD v1.1 question answering Test F1 to 93.2 (1.5 point absolute improvement) and SQuAD v2.0 Test F1 to 83.1 (5.1 point absolute improvement).",
+}
+
+
+@misc{Thorne:2020:NeuralDB,
+      title={Neural Databases}, 
+      author={James Thorne and Majid Yazdani and Marzieh Saeidi and Fabrizio Silvestri and Sebastian Riedel and Alon Halevy},
+      year={2020},
+      eprint={2010.06973},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL}
+}
+
+@article{Li:2020:Ditto,
+   title={Deep entity matching with pre-trained language models},
+   volume={14},
+   ISSN={2150-8097},
+   url={http://dx.doi.org/10.14778/3421424.3421431},
+   DOI={10.14778/3421424.3421431},
+   number={1},
+   journal={Proceedings of the VLDB Endowment},
+   publisher={VLDB Endowment},
+   author={Li, Yuliang and Li, Jinfeng and Suhara, Yoshihiko and Doan, AnHai and Tan, Wang-Chiew},
+   year={2020},
+   month={Sep},
+   pages={50–60}
+}
+
+
+@article{Limaye:2010:VLDB:AnnotatingWebTables,
+author = {Limaye, Girija and Sarawagi, Sunita and Chakrabarti, Soumen},
+title = {Annotating and Searching Web Tables Using Entities, Types and Relationships},
+year = {2010},
+issue_date = {September 2010},
+publisher = {VLDB Endowment},
+volume = {3},
+number = {1–2},
+issn = {2150-8097},
+url = {https://doi.org/10.14778/1920841.1921005},
+doi = {10.14778/1920841.1921005},
+abstract = {Tables are a universal idiom to present relational data. Billions of tables on Web pages express entity references, attributes and relationships. This representation of relational world knowledge is usually considerably better than completely unstructured, free-format text. At the same time, unlike manually-created knowledge bases, relational information mined from "organic" Web tables need not be constrained by availability of precious editorial time. Unfortunately, in the absence of any formal, uniform schema imposed on Web tables, Web search cannot take advantage of these high-quality sources of relational information. In this paper we propose new machine learning techniques to annotate table cells with entities that they likely mention, table columns with types from which entities are drawn for cells in the column, and relations that pairs of table columns seek to express. We propose a new graphical model for making all these labeling decisions for each table simultaneously, rather than make separate local decisions for entities, types and relations. Experiments using the YAGO catalog, DB-Pedia, tables from Wikipedia, and over 25 million HTML tables from a 500 million page Web crawl uniformly show the superiority of our approach. We also evaluate the impact of better annotations on a prototype relational Web search tool. We demonstrate clear benefits of our annotations beyond indexing tables in a purely textual manner.},
+journal = {Proc. VLDB Endow.},
+month = sep,
+pages = {1338–1347},
+numpages = {10}
+}
+
+@article{Venetis:2011:VLDB:RecoveringSemantics,
+author = {Venetis, Petros and Halevy, Alon and Madhavan, Jayant and Pa\c{s}ca, Marius and Shen, Warren and Wu, Fei and Miao, Gengxin and Wu, Chung},
+title = {Recovering Semantics of Tables on the Web},
+year = {2011},
+issue_date = {June 2011},
+publisher = {VLDB Endowment},
+volume = {4},
+number = {9},
+issn = {2150-8097},
+url = {https://doi.org/10.14778/2002938.2002939},
+doi = {10.14778/2002938.2002939},
+abstract = {The Web offers a corpus of over 100 million tables [6], but the meaning of each table is rarely explicit from the table itself. Header rows exist in few cases and even when they do, the attribute names are typically useless. We describe a system that attempts to recover the semantics of tables by enriching the table with additional annotations. Our annotations facilitate operations such as searching for tables and finding related tables.To recover semantics of tables, we leverage a database of class labels and relationships automatically extracted from the Web. The database of classes and relationships has very wide coverage, but is also noisy. We attach a class label to a column if a sufficient number of the values in the column are identified with that label in the database of class labels, and analogously for binary relationships. We describe a formal model for reasoning about when we have seen sufficient evidence for a label, and show that it performs substantially better than a simple majority scheme. We describe a set of experiments that illustrate the utility of the recovered semantics for table search and show that it performs substantially better than previous approaches. In addition, we characterize what fraction of tables on the Web can be annotated using our approach.},
+journal = {Proc. VLDB Endow.},
+month = jun,
+pages = {528–538},
+numpages = {11}
+}
+
+
+@inbook{Macdonald:2020:CIKM:NeuralRelationExtraction,
+author = {Macdonald, Erin and Barbosa, Denilson},
+title = {Neural Relation Extraction on Wikipedia Tables for Augmenting Knowledge Graphs},
+year = {2020},
+isbn = {9781450368599},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3340531.3412164},
+abstract = {Knowledge Graph Augmentation is the task of adding missing facts to an incomplete knowledge graph to improve its effectiveness in applications such as web search and question answering. State-of-the-art methods rely on information extraction from running text, leaving rich sources of facts such as tables behind. We help close this gap with a neural method that uses contextual information surrounding a table in a Wikipedia article to extract relations between entities appearing in the same row of a table or between the entity of said article and entities appearing in the table. We trained and tested our method on a much larger dataset compared to previous work which we have made public and observed experimentally that our method is very promising for the task.},
+booktitle = {Proceedings of the 29th ACM International Conference on Information \& Knowledge Management},
+pages = {2133–2136},
+numpages = {4}
+}
+
+@inproceedings{Munoz:2014:WSDM:UsingLinkedData,
+author = {Mu\~{n}oz, Emir and Hogan, Aidan and Mileo, Alessandra},
+title = {Using Linked Data to Mine RDF from Wikipedia's Tables},
+year = {2014},
+isbn = {9781450323512},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/2556195.2556266},
+doi = {10.1145/2556195.2556266},
+abstract = {The tables embedded in Wikipedia articles contain rich, semi-structured encyclopaedic content. However, the cumulative content of these tables cannot be queried against. We thus propose methods to recover the semantics of Wikipedia tables and, in particular, to extract facts from them in the form of RDF triples. Our core method uses an existing Linked Data knowledge-base to find pre-existing relations between entities in Wikipedia tables, suggesting the same relations as holding for other entities in analogous columns on different rows. We find that such an approach extracts RDF triples from Wikipedia's tables at a raw precision of 40%. To improve the raw precision, we define a set of features for extracted triples that are tracked during the extraction phase. Using a manually labelled gold standard, we then test a variety of machine learning methods for classifying correct/incorrect triples. One such method extracts 7.9 million unique and novel RDF triples from over one million Wikipedia tables at an estimated precision of 81.5%.},
+booktitle = {Proceedings of the 7th ACM International Conference on Web Search and Data Mining},
+pages = {533–542},
+numpages = {10},
+keywords = {linked data, data mining, wikipedia, web tables},
+location = {New York, New York, USA},
+series = {WSDM '14}
+}
+
+@inproceedings{Cappuzzo:2020:SIGMOD:CreatingEmbeddings,
+author = {Cappuzzo, Riccardo and Papotti, Paolo and Thirumuruganathan, Saravanan},
+title = {Creating Embeddings of Heterogeneous Relational Datasets for Data Integration Tasks},
+year = {2020},
+isbn = {9781450367356},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3318464.3389742},
+doi = {10.1145/3318464.3389742},
+abstract = {Deep learning based techniques have been recently used with promising results for data integration problems. Some methods directly use pre-trained embeddings that were trained on a large corpus such as Wikipedia. However, they may not always be an appropriate choice for enterprise datasets with custom vocabulary. Other methods adapt techniques from natural language processing to obtain embeddings for the enterprise's relational data. However, this approach blindly treats a tuple as a sentence, thus losing a large amount of contextual information present in the tuple. We propose algorithms for obtaining local embeddings that are effective for data integration tasks on relational databases. We make four major contributions. First, we describe a compact graph-based representation that allows the specification of a rich set of relationships inherent in the relational world. Second, we propose how to derive sentences from such a graph that effectively "describe" the similarity across elements (tokens, attributes, rows) in the two datasets. The embeddings are learned based on such sentences. Third, we propose effective optimization to improve the quality of the learned embeddings and the performance of integration tasks. Finally, we propose a diverse collection of criteria to evaluate relational embeddings and perform an extensive set of experiments validating them against multiple baseline methods. Our experiments show that our framework, EmbDI, produces meaningful results for data integration tasks such as schema matching and entity resolution both in supervised and unsupervised settings.},
+booktitle = {Proceedings of the 2020 ACM SIGMOD International Conference on Management of Data},
+pages = {1335–1349},
+numpages = {15},
+keywords = {deep learning, embeddings, data integration, schema matching, entity resolution},
+location = {Portland, OR, USA},
+series = {SIGMOD '20}
+}
+
+@inproceedings{Cannaviccio:2018:WWW:TowardsAnnotationgRelational,
+author = {Cannaviccio, Matteo and Barbosa, Denilson and Merialdo, Paolo},
+title = {Towards Annotating Relational Data on the Web with Language Models},
+year = {2018},
+isbn = {9781450356398},
+publisher = {International World Wide Web Conferences Steering Committee},
+address = {Republic and Canton of Geneva, CHE},
+url = {https://doi.org/10.1145/3178876.3186029},
+doi = {10.1145/3178876.3186029},
+abstract = {Tables and structured lists on Web pages are a potential source of valuable information, and several methods have been proposed to annotate them with semantics that can be leveraged for search, question answering and information extraction. This paper is concerned with the specific problem of finding and ranking relations from a given Knowledge Graph (KG) that hold over pairs of entities juxtaposed in a table or structured list. The state-of-the-art for this task is to attempt to link the entities mentioned in the table cells to objects in the KG and rank the relations that hold for those linked objects. As a result, these methods are hampered by the incompleteness and uneven coverage in even the best knowledge graphs available today. The alternative described here does not require entity linking, relying instead on ranking relations using generative language models derived from Web-scale corpora. As such, it can produce quality results even when the entities in the table are missing in the KG. The experimental validation, designed to expose the challenges posed by KG incompleteness, shows that our approach is robust and effective in practice.},
+booktitle = {Proceedings of the 2018 World Wide Web Conference},
+pages = {1307–1316},
+numpages = {10},
+keywords = {web table understanding, knowledge graphs, generative language models},
+location = {Lyon, France},
+series = {WWW '18}
+}
+
+@inproceedings{Chen:2019:IJCAI:HNN,
+  author    = {Jiaoyan Chen and
+               Ernesto Jim{\'{e}}nez{-}Ruiz and
+               Ian Horrocks and
+               Charles Sutton},
+  editor    = {Sarit Kraus},
+  title     = {Learning Semantic Annotations for Tabular Data},
+  booktitle = {Proceedings of the Twenty-Eighth International Joint Conference on
+               Artificial Intelligence, {IJCAI} 2019, Macao, China, August 10-16,
+               2019},
+  pages     = {2088--2094},
+  publisher = {ijcai.org},
+  year      = {2019},
+  url       = {https://doi.org/10.24963/ijcai.2019/289},
+  doi       = {10.24963/ijcai.2019/289},
+  timestamp = {Mon, 12 Oct 2020 10:46:37 +0200},
+}
+
+@inproceedings{Chen:2019:AAAI:ColNet,
+  author    = {Jiaoyan Chen and
+               Ernesto Jim{\'{e}}nez{-}Ruiz and
+               Ian Horrocks and
+               Charles Sutton},
+  title     = {ColNet: Embedding the Semantics of Web Tables for Column Type Prediction},
+  booktitle = {The Thirty-Third {AAAI} Conference on Artificial Intelligence, {AAAI}
+               2019, The Thirty-First Innovative Applications of Artificial Intelligence
+               Conference, {IAAI} 2019, The Ninth {AAAI} Symposium on Educational
+               Advances in Artificial Intelligence, {EAAI} 2019, Honolulu, Hawaii,
+               USA, January 27 - February 1, 2019},
+  pages     = {29--36},
+  publisher = {{AAAI} Press},
+  year      = {2019},
+  url       = {https://doi.org/10.1609/aaai.v33i01.330129},
+  doi       = {10.1609/aaai.v33i01.330129},
+  timestamp = {Mon, 12 Oct 2020 10:46:35 +0200},
+}
+
+
+@article{Tang:2020:RelationalPretrained,
+author = {Tang, Nan and Fan, Ju and Li, Fangyi and Tu, Jianhong and Du, Xiaoyong and Li, Guoliang and Madden, Sam and Ouzzani, Mourad},
+title = {RPT: Relational Pre-Trained Transformer is Almost All You Need towards Democratizing Data Preparation},
+year = {2021},
+issue_date = {April 2021},
+publisher = {VLDB Endowment},
+volume = {14},
+number = {8},
+issn = {2150-8097},
+url = {https://doi.org/10.14778/3457390.3457391},
+doi = {10.14778/3457390.3457391},
+abstract = {Can AI help automate human-easy but computer-hard data preparation tasks that burden data scientists, practitioners, and crowd workers? We answer this question by presenting RPT, a denoising autoencoder for tuple-to-X models ("X" could be tuple, token, label, JSON, and so on). RPT is pre-trained for a tuple-to-tuple model by corrupting the input tuple and then learning a model to reconstruct the original tuple. It adopts a Transformer-based neural translation architecture that consists of a bidirectional encoder (similar to BERT) and a left-to-right autoregressive decoder (similar to GPT), leading to a generalization of both BERT and GPT. The pre-trained RPT can already support several common data preparation tasks such as data cleaning, auto-completion and schema matching. Better still, RPT can be fine-tuned on a wide range of data preparation tasks, such as value normalization, data transformation, data annotation, etc. To complement RPT, we also discuss several appealing techniques such as collaborative training and few-shot learning for entity resolution, and few-shot learning and NLP question-answering for information extraction. In addition, we identify a series of research opportunities to advance the field of data preparation.},
+journal = {Proc. VLDB Endow.},
+month = {apr},
+pages = {1254–1261},
+numpages = {8}
+}
+
+
+@article{Takeoka:2019:AAAI:Meimei,
+  title={Meimei: An Efficient Probabilistic Approach for Semantically Annotating Tables},
+  volume={33},
+  url={https://ojs.aaai.org/index.php/AAAI/article/view/3796}, DOI={10.1609/aaai.v33i01.3301281},
+  number={01}, 
+  journal={Proceedings of the AAAI Conference on Artificial Intelligence}, author={Takeoka, Kunihiro and Oyamada, Masafumi and Nakadai, Shinji and Okadome, Takeshi},
+  year={2019},
+  month={Jul.},
+  pages={281-288}
+}
+
+@article{Zhang:2020:Sato,
+author = {Zhang, Dan and Suhara, Yoshihiko and Li, Jinfeng and Hulsebos, Madelon and Demiralp, \c{C}a\u{g}atay and Tan, Wang-Chiew},
+title = {Sato: Contextual Semantic Type Detection in Tables},
+year = {2020},
+issue_date = {August 2020},
+publisher = {VLDB Endowment},
+volume = {13},
+number = {12},
+issn = {2150-8097},
+url = {https://doi.org/10.14778/3407790.3407793},
+doi = {10.14778/3407790.3407793},
+journal = {Proc. VLDB Endow.},
+month = jul,
+pages = {1835–1848},
+numpages = {14}
+}
+
+@inproceedings{Hulsebos:2019:Sherlock,
+author = {Hulsebos, Madelon and Hu, Kevin and Bakker, Michiel and Zgraggen, Emanuel and Satyanarayan, Arvind and Kraska, Tim and Demiralp, \c{C}agatay and Hidalgo, C\'{e}sar},
+title = {Sherlock: A Deep Learning Approach to Semantic Data Type Detection},
+year = {2019},
+isbn = {9781450362016},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3292500.3330993},
+doi = {10.1145/3292500.3330993},
+booktitle = {Proceedings of the 25th ACM SIGKDD International Conference on Knowledge Discovery \& Data Mining},
+pages = {1500–1508},
+numpages = {9},
+keywords = {deep learning, semantic types, type detection, tabular data},
+location = {Anchorage, AK, USA},
+series = {KDD '19}
+}
+
+@article{Nguyen:2020:MTab4DBPedia,
+  title={{MTab4DBpedia}: Semantic Annotation for Tabular Data with DBpedia},
+  author={Nguyen, Phuc and Kertkeidkachorn, Natthawut and Ichise, Ryutaro and Takeda, Hideaki},
+}
+
+
+@inproceedings{Khurana:2020:SemanticAnnotation4TabularData,
+author = {Khurana, Udayan and Galhotra, Sainyam},
+title = {Semantic Concept Annotation for Tabular Data},
+year = {2021},
+isbn = {9781450384469},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3459637.3482295},
+abstract = {Determining the semantic concepts of columns in tabular data is of use for many applications ranging from data integration, cleaning, search to feature engineering and model building in machine learning. Several prior works have proposed supervised learning-based or heuristic-based approaches to semantic type annotation. These techniques suffer from poor generalizability over a large number of concepts or examples. Recent neural network based supervised learning methods generalize to different datasets but require large amounts of curated training data and also present scalability issues. Furthermore, none of the known methods works well for numerical data. We present C2, a system that maps each column to a concept based on a maximum likelihood estimation approach through ensembles. It is able to effectively utilize vast amounts of, albeit somewhat noisy, openly available table corpora in addition to two popular knowledge graphs (Wikidata and DBpedia), to perform effective and efficient concept annotation for tabular data. Specifically, we utilize a collection of 32 million openly available webtables from several sources. We also present efficient indexing techniques for categorical string, numeric and mixed-type data, and novel techniques for table context utilization. We demonstrate the effectiveness and efficiency of C2 over available techniques on 9 real-world datasets containing a wide variety of concepts.},
+booktitle = {Proceedings of the 30th ACM International Conference on Information \& Knowledge Management},
+pages = {844–853},
+numpages = {10}
+}
+
+
+@misc{Trabelsi:2020:SeLaB,
+      title={Semantic Labeling Using a Deep Contextualized Language Model}, 
+      author={Mohamed Trabelsi and Jin Cao and Jeff Heflin},
+      year={2020},
+      eprint={2010.16037},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
+
+
+@article{Deng:2020:TURL,
+author = {Deng, Xiang and Sun, Huan and Lees, Alyssa and Wu, You and Yu, Cong},
+title = {TURL: Table Understanding through Representation Learning},
+year = {2020},
+issue_date = {November 2020},
+publisher = {VLDB Endowment},
+volume = {14},
+number = {3},
+issn = {2150-8097},
+url = {https://doi.org/10.14778/3430915.3430921},
+doi = {10.14778/3430915.3430921},
+abstract = {Relational tables on the Web store a vast amount of knowledge. Owing to the wealth of such tables, there has been tremendous progress on a variety of tasks in the area of table understanding. However, existing work generally relies on heavily-engineered task-specific features and model architectures. In this paper, we present TURL, a novel framework that introduces the pre-training/fine-tuning paradigm to relational Web tables. During pre-training, our framework learns deep contextualized representations on relational tables in an unsupervised manner. Its universal model design with pre-trained representations can be applied to a wide range of tasks with minimal task-specific fine-tuning.Specifically, we propose a structure-aware Transformer encoder to model the row-column structure of relational tables, and present a new Masked Entity Recovery (MER) objective for pre-training to capture the semantics and knowledge in large-scale unlabeled data. We systematically evaluate TURL with a benchmark consisting of 6 different tasks for table understanding (e.g., relation extraction, cell filling). We show that TURL generalizes well to all tasks and substantially outperforms existing methods in almost all instances.},
+journal = {Proc. VLDB Endow.},
+month = {nov},
+pages = {307–319},
+numpages = {13}
+}
+
+
+
+@article{lafferty2001conditional,
+  title={Conditional random fields: Probabilistic models for segmenting and labeling sequence data},
+  author={Lafferty, John and McCallum, Andrew and Pereira, Fernando CN},
+  year={2001}
+}
+
+@inproceedings{yin2020tabert,
+    title = "{T}a{BERT}: Pretraining for Joint Understanding of Textual and Tabular Data",
+    author = "Yin, Pengcheng  and
+      Neubig, Graham  and
+      Yih, Wen-tau  and
+      Riedel, Sebastian",
+    booktitle = "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics",
+    month = jul,
+    year = "2020",
+    address = "Online",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2020.acl-main.745",
+    doi = "10.18653/v1/2020.acl-main.745",
+    pages = "8413--8426",
+    abstract = "Recent years have witnessed the burgeoning of pretrained language models (LMs) for text-based natural language (NL) understanding tasks. Such models are typically trained on free-form NL text, hence may not be suitable for tasks like semantic parsing over structured data, which require reasoning over both free-form NL questions and structured tabular data (e.g., database tables). In this paper we present TaBERT, a pretrained LM that jointly learns representations for NL sentences and (semi-)structured tables. TaBERT is trained on a large corpus of 26 million tables and their English contexts. In experiments, neural semantic parsers using TaBERT as feature representation layers achieve new best results on the challenging weakly-supervised semantic parsing benchmark WikiTableQuestions, while performing competitively on the text-to-SQL dataset Spider.",
+}
+
+
+@inproceedings{herzig2020tapas,
+    title = "{T}a{P}as: Weakly Supervised Table Parsing via Pre-training",
+    author = {Herzig, Jonathan  and
+      Nowak, Pawel Krzysztof  and
+      M{\"u}ller, Thomas  and
+      Piccinno, Francesco  and
+      Eisenschlos, Julian},
+    booktitle = "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics",
+    month = jul,
+    year = "2020",
+    address = "Online",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2020.acl-main.398",
+    doi = "10.18653/v1/2020.acl-main.398",
+    pages = "4320--4333",
+    abstract = "Answering natural language questions over tables is usually seen as a semantic parsing task. To alleviate the collection cost of full logical forms, one popular approach focuses on weak supervision consisting of denotations instead of logical forms. However, training semantic parsers from weak supervision poses difficulties, and in addition, the generated logical forms are only used as an intermediate step prior to retrieving the denotation. In this paper, we present TaPas, an approach to question answering over tables without generating logical forms. TaPas trains from weak supervision, and predicts the denotation by selecting table cells and optionally applying a corresponding aggregation operator to such selection. TaPas extends BERT{'}s architecture to encode tables as input, initializes from an effective joint pre-training of text segments and tables crawled from Wikipedia, and is trained end-to-end. We experiment with three different semantic parsing datasets, and find that TaPas outperforms or rivals semantic parsing models by improving state-of-the-art accuracy on SQA from 55.1 to 67.2 and performing on par with the state-of-the-art on WikiSQL and WikiTQ, but with a simpler model architecture. We additionally find that transfer learning, which is trivial in our setting, from WikiSQL to WikiTQ, yields 48.7 accuracy, 4.2 points above the state-of-the-art.",
+}
+
+
+@inproceedings{SunWLFTWW20aaai,
+  author    = {Yu Sun and
+               Shuohuan Wang and
+               Yu{-}Kun Li and
+               Shikun Feng and
+               Hao Tian and
+               Hua Wu and
+               Haifeng Wang},
+  title     = {{ERNIE} 2.0: {A} Continual Pre-Training Framework for Language Understanding},
+  booktitle = {{AAAI}},
+  pages     = {8968--8975},
+  year      = {2020}
+}
+
+@article{glue,
+  author    = {GLUE},
+  title     = {GLUE Leaderboard},
+  journal   = {https://gluebenchmark.com/leaderboard},
+  year      = {2021}
+}
+
+@article{superglue,
+  author    = {SuperGLUE},
+  title     = {SuperGLUE Leaderboard},
+  journal   = {https://super.gluebenchmark.com/leaderboard},
+  year      = {2021}
+}
+
+@inproceedings{WangSMHLB19,
+  author    = {Alex Wang and
+               Amanpreet Singh and
+               Julian Michael and
+               Felix Hill and
+               Omer Levy and
+               Samuel R. Bowman},
+  title     = {{GLUE:} {A} Multi-Task Benchmark and Analysis Platform for Natural
+               Language Understanding},
+  booktitle = {{ICLR}},
+  year      = {2019}
+}
+
+@article{chen2019tabfact,
+  title={Tabfact: A large-scale dataset for table-based fact verification},
+  author={Chen, Wenhu and Wang, Hongmin and Chen, Jianshu and Zhang, Yunkai and Wang, Hong and Li, Shiyang and Zhou, Xiyou and Wang, William Yang},
+  journal={arXiv preprint arXiv:1909.02164},
+  year={2019}
+}
+
+
+@inproceedings{koutras2021valentine,
+  title={Valentine: Evaluating Matching Techniques for Dataset Discovery},
+  author={Koutras, Christos and Siachamis, George and Ionescu, Andra and Psarakis, Kyriakos and Brons, Jerry and Fragkoulis, Marios and Lofi, Christoph and Bonifati, Angela and Katsifodimos, Asterios},
+  booktitle={2021 IEEE 37th International Conference on Data Engineering (ICDE)},
+  pages={468--479},
+  year={2021},
+  organization={IEEE}
+}
+
+@inproceedings{do2002coma,
+  title={COMA—a system for flexible combination of schema matching approaches},
+  author={Do, Hong-Hai and Rahm, Erhard},
+  booktitle={VLDB'02: Proceedings of the 28th International Conference on Very Large Databases},
+  pages={610--621},
+  year={2002},
+  organization={Elsevier}
+}
+
+@inproceedings{madhavan2001generic,
+  title={Generic schema matching with cupid},
+  author={Madhavan, Jayant and Bernstein, Philip A and Rahm, Erhard},
+  booktitle={vldb},
+  volume={1},
+  pages={49--58},
+  year={2001},
+  organization={Citeseer}
+}
+
+@inproceedings{zhang2011automatic,
+  title={Automatic discovery of attributes in relational databases},
+  author={Zhang, Meihui and Hadjieleftheriou, Marios and Ooi, Beng Chin and Procopiuc, Cecilia M and Srivastava, Divesh},
+  booktitle={Proceedings of the 2011 ACM SIGMOD International Conference on Management of data},
+  pages={109--120},
+  year={2011}
+}
